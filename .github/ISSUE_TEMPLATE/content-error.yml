@@ -1,0 +1,30 @@
+name: Wrong answer or content error
+description: A question, answer, explanation, lesson or reference that looks wrong.
+title: "[Content] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for catching this. Don't paste real exam questions here: the candidate agreement forbids sharing them.
+        Add "@claude" anywhere in this issue if you want Claude to check it and propose a fix.
+  - type: input
+    id: qid
+    attributes:
+      label: Question or lesson id
+      description: Shown under each question in the app, such as q3.4-012 or lesson 2.3.
+      placeholder: q3.4-012
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's wrong
+      description: Quote the text and say what you think is incorrect.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source that shows the correct answer
+      description: A link or a book chapter and section. Primary sources (NIST, OWASP, EU AI Act, ISO) are best.

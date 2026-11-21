@@ -1,0 +1,1619 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src '__SCRIPT_HASH__'; style-src 'unsafe-inline'; font-src data:; img-src data:; connect-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Exam Trainer</title>
+<link rel="icon" type="image/png" href="__FAVICON__">
+<style>
+/*__FONTS__*/
+:root{
+  --bg:#110919; --bg2:#110919; --surface:#1C1228; --surface2:#261836; --line:#2E2040; --line2:#45325E;
+  --ink:#FBF7FF; --muted:#BFB1D3; --dim:#8F80A6;
+  --gold:#E3B94E; --gold-ink:#1A0F05; --blue:#4A2070; --blue-line:#E3B94E; --link:#F0CF78; --plum:#4A2070;
+  --ok:#5CC58B; --ok-bg:rgba(92,197,139,.13); --bad:#EE7A64; --bad-bg:rgba(238,122,100,.13);
+  --m0:#2E2040; --m1:#C4563F; --m2:#D59A35; --m3:#86AC5C; --m4:#3FA56A;
+  --serif:"Inter Tight",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+  font-size:100%;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ color-scheme:dark; } }
+:root[data-theme="dark"]{ color-scheme:dark; }
+:root[data-size="2"]{font-size:112.5%}
+:root[data-size="3"]{font-size:125%}
+:root[data-contrast="high"]{
+  --bg:#000; --bg2:#000; --surface:#0B0B12; --surface2:#15151F; --line:#8C86A8; --line2:#C9C3E3;
+  --ink:#FFFFFF; --muted:#E2DDF2; --dim:#CFC9E6; --gold:#FFD66B; --link:#D8CCFF; --blue:#1E3770; --blue-line:#B9A8FF;
+  --ok:#7EF0AE; --bad:#FF9C87; --m0:#3A3460;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--serif);font-size:1.0625rem;line-height:1.6;-webkit-text-size-adjust:100%;
+  background:var(--bg)}
+:root[data-contrast="high"] body{background:#000}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg2)}
+a{color:var(--link)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.mono{font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;font-size:.78rem}
+
+/* Header */
+.top{background:var(--bg);border-bottom:2px solid var(--gold)}
+.top-inner{max-width:1040px;margin:0 auto;padding:1rem 1.25rem .9rem}
+.brand{display:flex;align-items:center;gap:.9rem;text-decoration:none;color:var(--ink)}
+.brand img.avatar{flex:none;height:72px;width:auto;padding:4px;background:radial-gradient(circle at 50% 62%,var(--plum) 0 57%,transparent 58%)}
+.brand-name{font-family:var(--sans);font-weight:800;font-size:1.75rem;line-height:1.1;letter-spacing:-.025em}
+.brand-name span{color:var(--gold)}
+.brand-sub{font-family:var(--mono);letter-spacing:.24em;text-transform:uppercase;font-size:.78rem;color:var(--muted);margin-top:.2rem}
+.nav{display:flex;flex-wrap:wrap;gap:.2rem .35rem;margin:1rem 0 .2rem;align-items:center}
+.nav a{font-family:var(--sans);font-weight:600;font-size:1.02rem;color:var(--ink);text-decoration:none;padding:.4rem .15rem;margin-right:.75rem;border:0;border-bottom:3px solid transparent;border-radius:0;opacity:.8}
+.nav a:hover{opacity:1;border-bottom-color:var(--line2)}
+.nav a[aria-current="page"]{color:var(--gold);border-bottom-color:var(--gold);opacity:1}
+.tools{display:flex;gap:.5rem;margin-left:auto}
+.tool{font-family:var(--mono);letter-spacing:.12em;font-size:.78rem;background:transparent;border:1px solid var(--line2);border-radius:6px;padding:.45rem .7rem;min-height:40px;cursor:pointer;color:var(--ink)}
+.tool[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+.who{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:.9rem;padding-top:.85rem}
+.who b{font-family:var(--sans);font-size:1.05rem}
+.chip{font-family:var(--mono);letter-spacing:.16em;text-transform:uppercase;font-size:.74rem;border:1px solid var(--line2);border-radius:999px;padding:.25rem .8rem;color:var(--muted)}
+.who button.link{margin-left:auto;background:none;border:0;font-family:var(--mono);letter-spacing:.16em;text-transform:uppercase;font-size:.76rem;color:var(--muted);cursor:pointer;min-height:40px}
+.who button.link:hover{color:var(--gold)}
+
+main{max-width:1040px;margin:0 auto;padding:1.75rem 1.25rem 5rem}
+h1{font-family:var(--sans);font-weight:800;font-size:2.4rem;line-height:1.1;margin:0 0 .5rem;letter-spacing:-.03em}
+h2{font-family:var(--sans);font-weight:600;font-size:1.3rem;margin:2.25rem 0 .8rem;letter-spacing:-.01em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.4rem 0 .9rem;max-width:68ch}
+.lede{color:var(--muted);margin-top:0}
+.small{font-size:.9rem;color:var(--muted)}
+.eyebrow{font-family:var(--mono);letter-spacing:.18em;text-transform:uppercase;font-size:.76rem;color:var(--gold);margin:0 0 .4rem}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:46px;padding:.6rem 1.15rem;border-radius:6px;text-transform:uppercase;letter-spacing:.06em;font-size:.9rem;border:1px solid var(--line2);background:var(--surface);cursor:pointer;text-decoration:none;color:var(--ink);font-family:var(--sans);font-weight:600;font-size:1rem}
+.btn:hover{border-color:var(--muted)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.btn.gold:hover{filter:brightness(1.07)}
+.btn.blue{background:var(--blue);border-color:var(--blue-line)}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--muted);font-weight:600}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1.25rem 1.35rem}
+.card + .card{margin-top:1rem}
+.callout{border:1px solid rgba(201,168,76,.55);background:linear-gradient(180deg,rgba(201,168,76,.09),rgba(201,168,76,.02));border-radius:6px;padding:1.25rem 1.35rem;display:flex;gap:1rem;margin-bottom:1.5rem}
+.callout .bang{font-family:var(--sans);font-weight:800;color:var(--gold);font-size:1.6rem;line-height:1;flex:none;padding:0 .3rem}
+.callout h3{color:var(--gold);margin:0 0 .4rem}
+.callout p{margin:.3rem 0}
+
+/* Today hero */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem;margin-bottom:1rem}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero-main{position:relative;background:var(--surface);border:1px solid var(--gold);border-radius:6px;padding:1.4rem 11rem 1.3rem 1.4rem;min-height:230px}
+.greeter{position:absolute;right:1rem;bottom:0;height:215px;width:auto;pointer-events:none;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
+.bubble{position:absolute;right:.4rem;top:-1.1rem;white-space:nowrap;background:var(--gold);color:var(--gold-ink);font-weight:700;font-size:.85rem;padding:.42rem .75rem;border-radius:12px 12px 3px 12px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+@media (max-width:560px){.hero-main{padding-right:1.4rem;min-height:0}.greeter,.bubble{display:none}}
+:root[data-contrast="high"] .hero-main{background:var(--surface)}
+.hero-main h2{margin:0 0 .35rem;font-size:1.5rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.stat{background:var(--surface);padding:1rem 1.1rem}
+.stat b{display:block;font-family:var(--sans);font-weight:800;font-size:1.7rem;line-height:1.1}
+.stat span{font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;color:var(--muted)}
+.stat b.gold{color:var(--gold)}
+
+/* Exam map */
+.map{margin:.5rem 0}
+.map-strip{display:flex;gap:6px;height:76px}
+.map-dom{display:flex;flex-direction:column;min-width:0}
+.map-cells{display:flex;gap:2px;flex:1;border-radius:8px;overflow:hidden}
+.map-cell{flex:1;border:0;padding:0;cursor:pointer;background:var(--m0);min-width:3px}
+.map-cell:hover{filter:brightness(1.25)}
+.map-label{display:flex;justify-content:space-between;gap:.3rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--muted);padding-top:.4rem;white-space:nowrap;overflow:hidden}
+.map-label b{color:var(--ink)}
+.legend{display:flex;gap:1rem;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:.8rem}
+.legend span{display:inline-flex;align-items:center;gap:.35rem}
+.sw{width:.8rem;height:.8rem;border-radius:3px;display:inline-block}
+@media (max-width:640px){
+  .map-strip{flex-direction:column;height:auto;gap:10px}
+  .map-dom{flex:none!important}
+  .map-cells{flex:none;height:30px}
+  h1{font-size:1.7rem}
+  .brand-name{font-size:1.35rem}
+  .brand img.avatar{height:58px}
+  .nav a{font-size:.96rem;padding:.38rem .6rem}
+}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem}
+.tile{display:block;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem;text-decoration:none;color:var(--ink)}
+.tile:hover{border-color:var(--gold);background:var(--surface2)}
+.tile strong{display:block;font-family:var(--sans);font-size:1.05rem;margin-bottom:.15rem}
+.tile span{color:var(--muted);font-size:.93rem}
+
+.field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem;max-width:32rem}
+.field label,.field .lbl{font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;font-size:.74rem;color:var(--muted)}
+select,input[type=text],input[type=date],textarea{background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:.55rem .75rem;min-height:46px;color:var(--ink)}
+textarea{width:100%;min-height:12rem;font-family:var(--mono);font-size:.8rem}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:var(--bg2);padding:.5rem .9rem;min-height:44px;cursor:pointer;font-family:var(--sans);font-weight:600}
+.seg .seg-a{display:inline-flex;align-items:center;padding:.5rem .9rem;min-height:44px;background:var(--bg2);color:var(--ink);text-decoration:none;font-family:var(--sans);font-weight:600;border-right:1px solid var(--line2)}
+.seg .seg-a:last-child{border-right:0}
+.seg .seg-a[aria-pressed="true"]{background:var(--blue);box-shadow:inset 0 0 0 1px var(--blue-line)}
+.guide summary{font-size:1.02rem}
+.guide p{margin:.5rem 0}
+.seg button[aria-pressed="true"]{background:var(--blue);box-shadow:inset 0 0 0 1px var(--blue-line)}
+
+/* Question */
+.qwrap{max-width:46rem;margin:0 auto}
+.qbar{display:flex;align-items:center;gap:1rem;justify-content:space-between;flex-wrap:wrap;margin-bottom:.6rem}
+.qbar .mono{color:var(--muted)}
+.progress{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-bottom:1.4rem}
+.progress i{display:block;height:100%;background:var(--gold)}
+.timer{font-family:var(--mono);font-weight:500;font-size:1rem;color:var(--ink);letter-spacing:.05em}
+.timer.low{color:var(--bad)}
+.tag{font-family:var(--mono);letter-spacing:.1em;font-size:.74rem;color:var(--gold);text-transform:uppercase}
+.stem{font-size:1.2rem;line-height:1.55;margin:.35rem 0 1.25rem}
+.opts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+.opt{width:100%;text-align:left;display:flex;gap:.85rem;align-items:flex-start;padding:.9rem 1rem;border:1.5px solid var(--line2);border-radius:6px;background:var(--surface);cursor:pointer;min-height:54px;line-height:1.45;font-family:var(--sans);font-size:1.02rem}
+.opt:hover{border-color:var(--muted)}
+.opt .key{flex:none;width:1.8rem;height:1.8rem;border-radius:50%;border:1.5px solid var(--line2);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+.opt[aria-checked="true"]{border-color:var(--blue-line);background:var(--surface2)}
+.opt[aria-checked="true"] .key{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.opt.correct{border-color:var(--ok);background:var(--ok-bg)}
+.opt.correct .key{background:var(--ok);border-color:var(--ok);color:#0B1A11}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt.wrong .key{background:var(--bad);border-color:var(--bad);color:#200B06}
+.opt[disabled]{cursor:default}
+.feedback{margin-top:1.1rem;padding:1rem 1.15rem;border-left:4px solid var(--ok);background:var(--surface);border-radius:0 12px 12px 0}
+.feedback.bad{border-left-color:var(--bad)}
+.feedback:focus{outline:none}
+.feedback h3{margin:0 0 .35rem}
+.feedback p{margin:.3rem 0}
+.actions{display:flex;gap:.75rem;justify-content:space-between;align-items:center;margin-top:1.4rem;flex-wrap:wrap}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--surface2);border:1px solid var(--line2)}
+.dots i.ok{background:var(--ok);border-color:var(--ok)}
+.dots i.bad{background:var(--bad);border-color:var(--bad)}
+.dots i.cur{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,.4)}
+
+/* Lessons */
+.lesson-list{display:flex;flex-direction:column;gap:1.25rem}
+.dom-block h3{margin:0 0 .5rem;display:flex;justify-content:space-between;gap:1rem;align-items:baseline}
+.sub-row{display:flex;align-items:center;gap:.8rem;padding:.7rem .9rem;border:1px solid var(--line);border-radius:6px;background:var(--surface);text-decoration:none;color:var(--ink);margin-bottom:.45rem}
+.sub-row:hover{border-color:var(--blue-line)}
+.sub-row .id{font-family:var(--mono);color:var(--gold);font-size:.85rem;flex:none;width:2.4rem}
+.sub-row .nm{flex:1}
+.sub-row .st{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.08em;white-space:nowrap}
+.lesson{max-width:46rem}
+.lesson ul{padding-left:1.2rem;margin:.4rem 0 1rem}
+.lesson li{margin:.45rem 0}
+.trapbox{border:1px solid rgba(238,122,100,.45);background:var(--bad-bg);border-radius:6px;padding:.9rem 1.1rem;margin:1rem 0}
+.tipbox{border:1px solid rgba(201,168,76,.5);background:rgba(201,168,76,.07);border-radius:6px;padding:.9rem 1.1rem;margin:1rem 0}
+.anchor{margin:.6rem 0 0;font-size:.95rem}
+.anchor .mono{color:var(--gold);margin-right:.4rem}
+.where{margin-top:.75rem;padding-top:.65rem;border-top:1px solid var(--line)}
+.where .mono{color:var(--gold)}
+.where ul{margin:.3rem 0 0;padding-left:1.1rem}
+.where li{margin:.45rem 0;font-size:.95rem}
+.loc-ch,.loc-sec{display:block;color:var(--muted);font-size:.9rem}
+.loc-sec{color:var(--ink)}
+.trapbox .mono{color:var(--bad)} .tipbox .mono{color:var(--gold)}
+.trapbox p,.tipbox p{margin:.3rem 0 0}
+
+/* Flashcards */
+.flash{max-width:40rem;margin:0 auto}
+.fcard{width:100%;min-height:15rem;border:1.5px solid var(--line2);border-radius:20px;background:linear-gradient(160deg,var(--surface2),var(--surface));display:flex;flex-direction:column;justify-content:center;padding:1.6rem;text-align:left;cursor:pointer;color:var(--ink)}
+.fcard .front{font-family:var(--sans);font-weight:600;font-size:1.35rem;line-height:1.35}
+.fcard .back{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line2);font-size:1.12rem}
+.fcard .hint{margin-top:1rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+
+/* Plan */
+.plan{display:flex;flex-direction:column;gap:.5rem}
+.day{display:grid;grid-template-columns:auto 6.5rem 1fr;gap:.9rem;align-items:start;padding:.75rem .9rem;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.day.today{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.day.past{opacity:.6}
+.day input{width:1.3rem;height:1.3rem;margin-top:.2rem;accent-color:var(--gold)}
+.day .d{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;color:var(--muted);padding-top:.15rem}
+.day .w b{font-family:var(--sans)}
+.day .w a{color:var(--link)}
+@media (max-width:560px){.day{grid-template-columns:auto 1fr}.day .d{grid-column:2}.day .w{grid-column:2}}
+
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+th,td{text-align:left;padding:.6rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;color:var(--muted);font-weight:500}
+tr:last-child td{border-bottom:0}
+tr.dom td{background:var(--surface2);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{display:inline-block;width:4.5rem;height:.5rem;background:var(--bg2);border-radius:3px;overflow:hidden;vertical-align:middle;margin-right:.45rem}
+.bar i{display:block;height:100%}
+.review-item{border-top:1px solid var(--line);padding:1rem 0}
+.review-item:first-child{border-top:0}
+.mark-ok{color:var(--ok);font-weight:600}
+.mark-bad{color:var(--bad);font-weight:600}
+.empty{padding:2rem 1.25rem;text-align:center;color:var(--muted)}
+.notice{border:1px solid var(--line2);background:var(--surface);border-radius:6px;padding:.85rem 1rem;font-size:.95rem;color:var(--muted);margin:1rem 0}
+dialog{border:1px solid var(--line2);border-radius:6px;background:var(--surface);color:var(--ink);padding:1.3rem;width:min(40rem,calc(100vw - 2rem))}
+dialog::backdrop{background:rgba(5,2,12,.7)}
+pre{background:var(--bg2);padding:1rem;border-radius:6px;overflow-x:auto;font-size:.78rem;line-height:1.45}
+details summary{cursor:pointer;font-family:var(--sans);font-weight:600;min-height:44px;display:flex;align-items:center}
+body.focus .nav,body.focus .who{display:none}
+body.focus .top-inner{padding-bottom:1rem}
+.resume{position:sticky;top:0;z-index:6;background:var(--gold);color:var(--gold-ink)}
+.resume-in{max-width:1040px;margin:0 auto;padding:.55rem 1.25rem;display:flex;gap:.8rem;align-items:center;justify-content:space-between;flex-wrap:wrap;font-family:var(--sans);font-weight:600}
+.resume .btn{min-height:40px;background:var(--gold-ink);color:var(--gold);border-color:var(--gold-ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.big-done{font-family:var(--sans);font-weight:800;font-size:3rem;line-height:1;color:var(--gold)}
+@media (prefers-reduced-motion:no-preference){.progress i{transition:width .25s ease}.opt{transition:border-color .12s,background .12s}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="#dashboard" aria-label="Dashboard">
+      <img class="avatar" src="__AVATAR__" alt="" width="54" height="72">
+      <div><div class="brand-name" id="brand-name">Exam <span>Trainer</span></div><div class="brand-sub">A&amp;M Strategies</div></div>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#dashboard" data-nav="dashboard">Dashboard</a>
+      <a href="#today" data-nav="today">Today</a>
+      <a href="#plan" data-nav="plan">Study plan</a>
+      <a href="#learn" data-nav="learn">Learn</a>
+      <a href="#exam" data-nav="exam">Exams</a>
+      <a href="#study" data-nav="study">Domain drill</a>
+      <a href="#recall" data-nav="recall">Rapid recall</a>
+      <a href="#traps" data-nav="traps">Trap patterns</a>
+      <a href="#progress" data-nav="progress">Progress</a>
+      <a href="#blueprint" data-nav="blueprint">Blueprint</a>
+      <a href="#library" data-nav="library">Resource library</a>
+      <a href="#packs" data-nav="packs">Exam packs</a>
+      <a href="#feedback" data-nav="feedback">Feedback</a>
+      <a href="#disclosure" data-nav="disclosure">Disclosure</a>
+      <span class="tools">
+        <button class="tool" id="t-contrast" aria-pressed="false">Contrast</button>
+        <button class="tool" id="t-size">Text size</button>
+      </span>
+    </nav>
+    <div class="who">
+      <b id="who-name">Me</b><span class="chip">Practitioner</span>
+      <button class="link" id="who-switch">Switch practitioner</button>
+    </div>
+  </div>
+</header>
+<div id="resume" class="resume" hidden></div>
+<main id="app" tabindex="-1"></main>
+<div class="sr" aria-live="polite" id="live"></div>
+<dialog id="dlg"></dialog>
+
+<script type="application/json" id="default-pack">__DEFAULT_PACK__</script>
+<script>
+(function(){
+"use strict";
+
+/* ---------- storage ---------- */
+const LS = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const K = {
+  packs: "examprep:packs",
+  active: "examprep:active",
+  prefs: "examprep:prefs",
+  profiles: "examprep:profiles",
+  profile: "examprep:profile",
+  prog: (pid, id) => "examprep:p:" + pid + ":progress:" + id,
+  sess: (pid, id) => "examprep:p:" + pid + ":session:" + id
+};
+const mem = {};
+const store = {
+  get(k, d){ const v = LS.get(k, undefined); return v === undefined ? (k in mem ? mem[k] : d) : v; },
+  set(k, v){ mem[k] = v; return LS.set(k, v); },
+  del(k){ delete mem[k]; LS.del(k); }
+};
+
+/* ---------- helpers ---------- */
+const $app = document.getElementById("app");
+const $ = sel => $app.querySelector(sel);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct = x => x == null ? "–" : Math.round(x * 100) + "%";
+const LETTERS = "ABCDEFGH";
+const DAY = 86400000;
+const SECURITY_CONTACT = "mgalloway@amstrategiesnv.com";
+const FEEDBACK_CONTACT = "mgalloway@amstrategiesnv.com";
+/* Builds a mailto: link with a filled-in subject and body. Everything is URL-encoded, then HTML-escaped. */
+function mailtoHref(subject, lines){
+  let body = lines.join("\n");
+  if(body.length > 1500) body = body.slice(0, 1500) + "…";
+  return esc(`mailto:${FEEDBACK_CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+}
+function trainerTag(){ return `Sent from the ${pack.shortName || pack.name} Trainer (pack version ${pack.version || "–"}).`; }
+function questionReportHref(q){
+  const stem = String(q.stem || "");
+  return mailtoHref(`Trainer feedback: question ${q.id}`, [
+    `Question id: ${q.id}`, `Subdomain: ${q.subdomain}`,
+    `Question: ${stem.length > 300 ? stem.slice(0, 300) + "…" : stem}`, "",
+    "What looks wrong:", "", "", "Suggested fix, and a source if you have one:", "", "", trainerTag()]);
+}
+const POLICY_UPDATED = "2026-11-16";
+const BOX_DAYS = [0, 1, 3, 7, 14, 30];
+function shuffle(a){ a = a.slice(); for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function say(msg){ const l = document.getElementById("live"); l.textContent = ""; setTimeout(() => { l.textContent = msg; }, 30); }
+function fmtTime(sec){ sec = Math.max(0, Math.floor(sec)); const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s).padStart(2, "0"); }
+function fmtHM(min){ const h = Math.floor(min / 60), m = min % 60; return (h ? h + (h === 1 ? " hour" : " hours") : "") + (h && m ? " " : "") + (m ? m + " min" : ""); }
+function dkey(t){ const d = new Date(t == null ? Date.now() : t); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function fromKey(k){ const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); }
+function fmtDay(k, opts){ try{ return fromKey(k).toLocaleDateString(undefined, opts || {weekday:"short", month:"short", day:"numeric"}); }catch(e){ return k; } }
+function fmtDate(t){ try{ return new Date(t).toLocaleString(undefined, {month:"short", day:"numeric", hour:"numeric", minute:"2-digit"}); }catch(e){ return ""; } }
+function daysBetween(a, b){ return Math.round((fromKey(b) - fromKey(a)) / DAY); }
+function refList(list){
+  return (list || []).map(r => typeof r === "string" ? {id:r} : r).filter(r => r && pack._ref[r.id]).map(r => Object.assign({}, r, {ref: pack._ref[r.id]}));
+}
+function refTitle(x){ const u = safeUrl(x.ref.url); return u ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer" title="Opens the publisher’s page in a new tab"><i>${esc(x.ref.title)}</i></a>` : `<i>${esc(x.ref.title)}</i>`; }
+function chLabel(c){ return /^\d+$/.test(String(c)) ? "Chapter " + c : String(c); }
+function refLoc(x){
+  const parts = [];
+  if(x.chapter != null) parts.push(`<span class="loc-ch">${esc(chLabel(x.chapter))}${x.chapterTitle ? `: ${esc(x.chapterTitle)}` : ""}</span>`);
+  if(x.section) parts.push(`<span class="loc-sec">Section: ${esc(x.section)}</span>`);
+  if(x.pages) parts.push(`<span class="loc-sec">Pages ${esc(x.pages)}</span>`);
+  return parts.join("");
+}
+function whereHtml(q){
+  const rs = refList(q.references);
+  if(!rs.length && !(q.sources || []).length) return "";
+  const src = (q.sources || []).map(s => ({t: s.title, u: safeUrl(s.url)})).filter(s => s.u);
+  return `<div class="where"><span class="mono">Where to find it</span><ul>${rs.map(x => `<li>${refTitle(x)}${refLoc(x) || `<span class="loc-sec">Chapter not mapped yet</span>`}</li>`).join("")}</ul>
+    ${src.length ? `<span class="mono">Fact check</span><ul>${src.map(s => `<li><a href="${esc(s.u)}" target="_blank" rel="noopener noreferrer">${esc(s.t)}</a></li>`).join("")}</ul>` : ""}</div>`;
+}
+function safeUrl(u){ try{ const x = new URL(String(u)); return x.protocol === "https:" ? x.href : null; }catch(e){ return null; } }
+const BAD_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+function cleanMap(o, fn){ const out = {}; if(o && typeof o === "object" && !Array.isArray(o)) for(const k of Object.keys(o)){ if(BAD_KEYS.has(k) || k.length > 80) continue; const v = fn(o[k]); if(v !== undefined) out[k] = v; } return out; }
+const num = (v, d) => { const n = Number(v); return Number.isFinite(n) ? n : (d === undefined ? 0 : d); };
+function sanitizeProgress(o){
+  o = (o && typeof o === "object") ? o : {};
+  const p = {};
+  p.q = cleanMap(o.q, r => r && typeof r === "object" ? {a:num(r.a), c:num(r.c), box:Math.max(0, Math.min(5, num(r.box) | 0)), last:!!r.last, t:num(r.t)} : undefined);
+  p.cards = cleanMap(o.cards, r => r && typeof r === "object" ? {box:Math.max(0, Math.min(5, num(r.box) | 0)), last:!!r.last, t:num(r.t)} : undefined);
+  p.days = cleanMap(o.days, d => d && typeof d === "object" ? {n:num(d.n), c:num(d.c), dn:num(d.dn), dc:num(d.dc), daily:!!d.daily} : undefined);
+  p.plan = cleanMap(o.plan, v => v ? true : undefined);
+  p.read = cleanMap(o.read, v => num(v, Date.now()));
+  p.sims = (Array.isArray(o.sims) ? o.sims : []).slice(-200).map(s => ({at:num(s && s.at), title:String((s && s.title) || "Practice exam").slice(0, 60), correct:num(s && s.correct), n:Math.max(1, num(s && s.n, 1)), seconds:num(s && s.seconds),
+    byDom: cleanMap(s && s.byDom, v => Array.isArray(v) ? [num(v[0]), num(v[1])] : undefined)}));
+  const dk = /^\d{4}-\d{2}-\d{2}$/;
+  if(dk.test(String(o.examDate || ""))) p.examDate = o.examDate;
+  if(dk.test(String(o.planStart || ""))) p.planStart = o.planStart;
+  return p;
+}
+function masteryColor(m){ if(m == null) return "var(--m0)"; if(m < .5) return "var(--m1)"; if(m < .7) return "var(--m2)"; if(m < .85) return "var(--m3)"; return "var(--m4)"; }
+
+/* ---------- dialog ---------- */
+const dlg = document.getElementById("dlg");
+function openDialog(html, onReady){
+  dlg.innerHTML = html;
+  try{ dlg.showModal(); }catch(e){ dlg.setAttribute("open", ""); }
+  dlg.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", () => dlg.close()));
+  if(onReady) onReady(dlg);
+}
+function confirmBox(title, body, okLabel, danger){
+  return new Promise(resolve => {
+    openDialog(`<h2 style="margin-top:0">${esc(title)}</h2><p>${esc(body)}</p>
+      <div class="row" style="justify-content:flex-end;margin-top:1.25rem">
+        <button class="btn quiet" data-close>Cancel</button>
+        <button class="btn ${danger ? "danger" : "gold"}" id="dlg-ok">${esc(okLabel)}</button></div>`, d => {
+      let done = false;
+      d.querySelector("#dlg-ok").addEventListener("click", () => { done = true; d.close(); resolve(true); });
+      d.addEventListener("close", () => { if(!done) resolve(false); }, {once:true});
+    });
+  });
+}
+
+/* ---------- prefs ---------- */
+let prefs = (() => { const r = store.get(K.prefs, {}) || {}; const l = r.last && typeof r.last === "object" ? {v:String(r.last.v || "").slice(0, 20), arg: r.last.arg == null ? null : String(r.last.arg).slice(0, 20)} : null;
+  return {contrast: !!r.contrast, size: [1, 2, 3].includes(r.size) ? r.size : 1, bannerSeen: !!r.bannerSeen, last: l}; })();
+function applyPrefs(){
+  const r = document.documentElement;
+  if(prefs.contrast) r.setAttribute("data-contrast", "high"); else r.removeAttribute("data-contrast");
+  r.setAttribute("data-size", String(prefs.size || 1));
+  document.getElementById("t-contrast").setAttribute("aria-pressed", prefs.contrast ? "true" : "false");
+  document.getElementById("t-size").textContent = "Text size " + ["", "A", "A+", "A++"][prefs.size || 1];
+}
+function savePrefs(){ store.set(K.prefs, prefs); applyPrefs(); }
+document.getElementById("t-contrast").addEventListener("click", () => { prefs.contrast = !prefs.contrast; savePrefs(); say(prefs.contrast ? "High contrast on." : "High contrast off."); });
+document.getElementById("t-size").addEventListener("click", () => { prefs.size = (prefs.size || 1) % 3 + 1; savePrefs(); say("Text size " + prefs.size + " of 3."); });
+
+/* ---------- profiles ---------- */
+let profiles = store.get(K.profiles, null);
+profiles = (Array.isArray(profiles) ? profiles : []).filter(p => p && typeof p === "object" && typeof p.id === "string" && p.id && !BAD_KEYS.has(p.id) && p.id.length <= 40).map(p => ({id: p.id, name: String(p.name || "Practitioner").slice(0, 40)})).slice(0, 20);
+if(!profiles.length){ profiles = [{id:"p1", name:"Me"}]; store.set(K.profiles, profiles); }
+let profileId = String(store.get(K.profile, profiles[0].id));
+if(!profiles.some(p => p.id === profileId)) profileId = profiles[0].id;
+function profile(){ return profiles.find(p => p.id === profileId); }
+function renderWho(){ document.getElementById("who-name").textContent = profile().name; }
+document.getElementById("who-switch").addEventListener("click", switchDialog);
+function switchDialog(){
+  const list = profiles.map(p => `<li style="display:flex;gap:.5rem;align-items:center;margin:.4rem 0">
+    <button class="btn ${p.id === profileId ? "blue" : ""}" data-pick="${esc(p.id)}" style="flex:1;justify-content:flex-start">${esc(p.name)}${p.id === profileId ? " (current)" : ""}</button>
+    <button class="btn quiet" data-ren="${esc(p.id)}">Rename</button></li>`).join("");
+  openDialog(`<h2 style="margin-top:0">Who’s studying?</h2>
+    <p class="small">Each practitioner has separate progress, plan and streak on this device.</p>
+    <ul style="list-style:none;padding:0;margin:0 0 1rem">${list}</ul>
+    <div class="field" style="max-width:none"><label for="np">Add a practitioner</label>
+      <div class="row"><input type="text" id="np" placeholder="Name" style="flex:1" maxlength="40"><button class="btn gold" id="np-go">Add</button></div></div>
+    <div class="row" style="justify-content:flex-end"><button class="btn quiet" data-close>Close</button></div>`, d => {
+    d.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => { setProfile(b.dataset.pick); d.close(); }));
+    d.querySelectorAll("[data-ren]").forEach(b => b.addEventListener("click", () => {
+      const p = profiles.find(x => x.id === b.dataset.ren);
+      const li = b.parentElement;
+      li.innerHTML = `<input type="text" value="${esc(p.name)}" maxlength="40" style="flex:1"><button class="btn gold">Save</button>`;
+      const inp = li.querySelector("input"); inp.focus(); inp.select();
+      const save = () => { const v = inp.value.trim(); if(v){ p.name = v; store.set(K.profiles, profiles); renderWho(); } d.close(); switchDialog(); };
+      li.querySelector("button").addEventListener("click", save);
+      inp.addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); save(); } });
+    }));
+    const add = () => { const v = d.querySelector("#np").value.trim(); if(!v) return; const id = "p" + Date.now().toString(36); profiles.push({id, name:v}); store.set(K.profiles, profiles); setProfile(id); d.close(); say(`Switched to ${v}.`); };
+    d.querySelector("#np-go").addEventListener("click", add);
+    d.querySelector("#np").addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); add(); } });
+  });
+}
+function setProfile(id){ profileId = id; store.set(K.profile, id); loadActive(); renderWho(); go("dashboard"); }
+
+/* ---------- packs ---------- */
+const builtIn = [JSON.parse(document.getElementById("default-pack").textContent)];
+let pack, progress, session, timerId = null;
+let currentView = "dashboard";
+try{ const h = (location.hash || "").slice(1); if(h) currentView = h.split("/")[0]; }catch(e){}
+let viewArg = null;
+try{ const h = (location.hash || "").slice(1); if(h.includes("/")) viewArg = h.split("/").slice(1).join("/"); }catch(e){}
+
+function allPacks(){
+  const raw = store.get(K.packs, []);
+  const custom = (Array.isArray(raw) ? raw : []).filter(p => { try{ return !validatePack(p).length; }catch(e){ return false; } });
+  const map = new Map();
+  builtIn.forEach(p => map.set(p.id, Object.assign({}, p, {_builtIn:true})));
+  custom.forEach(p => map.set(p.id, Object.assign({}, p, {_builtIn:false, _overrides: map.has(p.id)})));
+  return Array.from(map.values());
+}
+function indexPack(p){
+  const M = () => Object.create(null);
+  p._dom = M(); p._sub = M(); p._ref = M(); p._q = M(); p._lesson = M(); p._card = M();
+  p.lessons = p.lessons || []; p.guides = p.guides || []; p.flashcards = p.flashcards || []; p.traps = p.traps || []; p.references = p.references || [];
+  p.domains.forEach(d => { p._dom[d.id] = d; d.subdomains.forEach(s => { p._sub[s.id] = Object.assign({}, s, {domain:d.id}); }); });
+  p.references.forEach(r => { p._ref[r.id] = r; });
+  p.questions.forEach(q => { p._q[q.id] = q; });
+  p.lessons.forEach(l => { p._lesson[l.subdomain] = l; });
+  p.flashcards.forEach((c, i) => { if(!c.id) c.id = "f" + i; p._card[c.id] = c; });
+  return p;
+}
+function loadActive(){
+  const list = allPacks();
+  const id = store.get(K.active, null);
+  pack = indexPack(list.find(p => p.id === id) || list[0]);
+  // migrate single-user progress from the first version
+  const legacy = LS.get("examprep:progress:" + pack.id, null);
+  if(legacy && profileId === "p1" && !LS.get(K.prog(profileId, pack.id), null)){ LS.set(K.prog(profileId, pack.id), legacy); LS.del("examprep:progress:" + pack.id); }
+  progress = sanitizeProgress(store.get(K.prog(profileId, pack.id), null));
+  session = sanitizeSession(store.get(K.sess(profileId, pack.id), null));
+  const sn = pack.shortName || pack.name;
+  document.getElementById("brand-name").innerHTML = esc(sn) + " <span>Trainer</span>";
+  document.title = sn + " Trainer";
+}
+function sanitizeSession(s){
+  try{
+    if(!s || typeof s !== "object" || Array.isArray(s) || !Array.isArray(s.items) || !s.items.length) return null;
+    if(!Number.isInteger(s.i) || s.i < 0 || s.i > s.items.length) return null;
+    if(!s.items.every(it => it && typeof it === "object" && typeof it.id === "string" && Object.prototype.hasOwnProperty.call(pack._q, it.id) && Array.isArray(it.order) && it.order.every(Number.isInteger))) return null;
+    s.title = String(s.title || "Session").slice(0, 80);
+    return s;
+  }catch(e){ return null; }
+}
+function saveProgress(){ store.set(K.prog(profileId, pack.id), progress); }
+function saveSession(){ if(session) store.set(K.sess(profileId, pack.id), session); else store.del(K.sess(profileId, pack.id)); }
+
+function validatePack(p){
+  const errs = [];
+  if(!p || typeof p !== "object") return ["The file is not a JSON object."];
+  if(!p.id) errs.push("Missing \"id\".");
+  if(!p.name) errs.push("Missing \"name\".");
+  if(!p.exam || !(p.exam.itemCount > 0) || !(p.exam.timeLimitMinutes > 0)) errs.push("\"exam\" needs itemCount and timeLimitMinutes.");
+  if(!Array.isArray(p.domains) || !p.domains.length) errs.push("\"domains\" must be a non-empty list.");
+  if(!Array.isArray(p.questions) || !p.questions.length) errs.push("\"questions\" must be a non-empty list.");
+  if(typeof p.id !== "string" || p.id.length > 80 || BAD_KEYS.has(p.id)) errs.push("\"id\" must be a short text value.");
+  ["lessons", "flashcards", "traps", "guides", "references"].forEach(k => { if(p[k] != null && !Array.isArray(p[k])) errs.push(`"${k}" must be a list.`); });
+  const isObj = o => o && typeof o === "object" && !Array.isArray(o);
+  if(errs.length) return errs;
+  if(!p.domains.every(isObj)) errs.push("Every domain must be an object.");
+  else p.domains.forEach((d, i) => { if(d.subdomains != null && !(Array.isArray(d.subdomains) && d.subdomains.every(isObj))) errs.push(`Domain ${i + 1}: "subdomains" must be a list of objects.`); });
+  if(!p.questions.every(isObj)) errs.push("Every question must be an object.");
+  ["lessons", "flashcards", "traps", "guides", "references"].forEach(k => { if((p[k] || []).some(x => !isObj(x))) errs.push(`Every entry in "${k}" must be an object.`); });
+  if(p.questions.some(q => isObj(q) && q.references != null && !Array.isArray(q.references))) errs.push("Question references must be lists.");
+  if(p.questions.some(q => isObj(q) && q.sources != null && !Array.isArray(q.sources))) errs.push("Question sources must be lists.");
+  if(p.questions.length > 20000) errs.push("A pack can hold at most 20,000 questions.");
+  if(errs.length) return errs.slice(0, 12);
+  const subs = new Set(), doms = new Set(), ids = new Set();
+  p.domains.forEach((d, i) => {
+    if(!d.id || !d.name) errs.push(`Domain ${i + 1} needs id and name.`);
+    if(!(d.weight >= 0)) errs.push(`Domain ${d.id || i + 1} needs a numeric weight.`);
+    doms.add(d.id);
+    (d.subdomains || []).forEach(s => subs.add(s.id));
+    if(!(d.subdomains || []).length) errs.push(`Domain ${d.id} has no subdomains.`);
+  });
+  p.questions.forEach((q, i) => {
+    const tag = q.id || `#${i + 1}`;
+    if(!q.id) errs.push(`Question ${tag} needs an id.`);
+    else if(ids.has(q.id)) errs.push(`Duplicate question id ${q.id}.`);
+    ids.add(q.id);
+    if(!doms.has(q.domain)) errs.push(`Question ${tag}: unknown domain "${q.domain}".`);
+    if(!subs.has(q.subdomain)) errs.push(`Question ${tag}: unknown subdomain "${q.subdomain}".`);
+    if(!Array.isArray(q.options) || q.options.length < 2) errs.push(`Question ${tag}: needs at least 2 options.`);
+    else if(!(Number.isInteger(q.answer) && q.answer >= 0 && q.answer < q.options.length)) errs.push(`Question ${tag}: "answer" must be an option index.`);
+    if(!q.stem) errs.push(`Question ${tag}: missing stem.`);
+  });
+  (p.lessons || []).forEach((l, i) => { if(!subs.has(l.subdomain)) errs.push(`Lesson ${i + 1}: unknown subdomain "${l.subdomain}".`); });
+  (p.flashcards || []).forEach((c, i) => { if(!c.front || !c.back) errs.push(`Flashcard ${i + 1} needs front and back.`); });
+  (p.guides || []).forEach((g, i) => { if(!g || !g.title) errs.push(`Guide ${i + 1} needs a title.`); else if(g.body && String(g.body).length > 200000) errs.push(`Guide ${i + 1} is too long.`); });
+  return errs.slice(0, 12);
+}
+
+/* ---------- stats ---------- */
+function stats(fn){
+  let total = 0, seen = 0, right = 0;
+  for(const q of pack.questions){
+    if(!fn(q)) continue;
+    total++;
+    const r = progress.q[q.id];
+    if(r){ seen++; if(r.last) right++; }
+  }
+  return {total, seen, right, mastery: seen ? right / seen : null};
+}
+function weightedScore(){
+  let w = 0, s = 0;
+  pack.domains.forEach(d => { const st = stats(q => q.domain === d.id); if(st.mastery != null){ w += d.weight; s += d.weight * st.mastery; } });
+  return w ? s / w : null;
+}
+function record(qid, ok){
+  const r = progress.q[qid] || {a:0, c:0, box:0};
+  r.a++; if(ok) r.c++; r.last = ok; r.t = Date.now();
+  r.box = ok ? Math.min((r.box || 0) + 1, BOX_DAYS.length - 1) : 0;
+  progress.q[qid] = r;
+  const k = dkey(); const d = progress.days[k] || {n:0, c:0};
+  d.n++; if(ok) d.c++; progress.days[k] = d;
+}
+function isDue(r){ return r && (!r.last || Date.now() - r.t >= BOX_DAYS[r.box || 0] * DAY - 3600000); }
+function streak(){
+  let n = 0; let t = Date.now();
+  if(!(progress.days[dkey(t)] && progress.days[dkey(t)].daily)) t -= DAY;
+  while(progress.days[dkey(t)] && progress.days[dkey(t)].daily){ n++; t -= DAY; }
+  return n;
+}
+function subScore(sid){ const st = stats(q => q.subdomain === sid); return (st.right + 1) / (st.seen + 2); }
+function weakestSubs(n){
+  const list = [];
+  pack.domains.forEach(d => d.subdomains.forEach(s => list.push({s, d, sc: subScore(s.id), seen: stats(q => q.subdomain === s.id).seen})));
+  list.sort((a, b) => (a.sc - b.sc) || (b.d.weight - a.d.weight));
+  return list.slice(0, n);
+}
+
+/* ---------- session builders ---------- */
+function mkItem(q){ return {id:q.id, order: q.lockOptions ? q.options.map((_, i) => i) : shuffle(q.options.map((_, i) => i)), pick:null, done:false}; }
+function buildExam(length){
+  const ex = pack.exam;
+  const byDom = {};
+  pack.domains.forEach(d => { byDom[d.id] = shuffle(pack.questions.filter(q => q.domain === d.id)); });
+  const n = Math.min(length === "full" ? ex.itemCount : Math.min(40, ex.itemCount), pack.questions.length);
+  const wsum = pack.domains.reduce((s, d) => s + d.weight, 0) || 1;
+  const alloc = pack.domains.map(d => { const exact = n * d.weight / wsum; return {d, k:Math.floor(exact), rem: exact - Math.floor(exact)}; });
+  let left = n - alloc.reduce((s, a) => s + a.k, 0);
+  alloc.slice().sort((a, b) => b.rem - a.rem).forEach(a => { if(left > 0){ a.k++; left--; } });
+  let spill = 0;
+  alloc.forEach(a => { const avail = byDom[a.d.id].length; if(a.k > avail){ spill += a.k - avail; a.k = avail; } });
+  while(spill > 0){ const c = alloc.filter(a => byDom[a.d.id].length > a.k).sort((x, y) => y.d.weight - x.d.weight)[0]; if(!c) break; c.k++; spill--; }
+  let qs = [];
+  alloc.forEach(a => qs.push(...byDom[a.d.id].slice(0, a.k)));
+  qs = shuffle(qs);
+  const minutes = Math.max(5, Math.round(ex.timeLimitMinutes * qs.length / ex.itemCount));
+  const now = Date.now();
+  return {kind:"exam", title: length === "full" ? "Full practice exam" : "Short practice exam",
+    items: qs.map(mkItem), i:0, allowBack: !!ex.allowBack, startedAt: now, endsAt: now + minutes * 60000, minutes, finished:false};
+}
+function origins(){ return [...new Set(pack.questions.map(q => q.origin).filter(Boolean))].map(String).sort(); }
+function srcMatch(q, src){ return !src || src === "all" || (src === "__core" ? !q.origin : q.origin === src); }
+function buildStudy(opts){
+  let qs = pack.questions.filter(q => (opts.domain === "all" || q.domain === opts.domain) && (opts.sub === "all" || q.subdomain === opts.sub) && srcMatch(q, opts.src));
+  if(opts.filter === "unseen") qs = qs.filter(q => !progress.q[q.id]);
+  if(opts.filter === "missed") qs = qs.filter(q => progress.q[q.id] && !progress.q[q.id].last);
+  qs = shuffle(qs);
+  if(opts.count !== "all") qs = qs.slice(0, +opts.count);
+  if(!qs.length) return null;
+  let title = "Domain drill";
+  if(opts.sub !== "all") title = opts.sub + " " + pack._sub[opts.sub].name;
+  else if(opts.domain !== "all") title = pack._dom[opts.domain].name;
+  if(opts.src && opts.src !== "all") title += opts.src === "__core" ? " (trainer set)" : ` (${String(opts.src).slice(0, 30)} set)`;
+  return {kind:"study", title, items: qs.map(mkItem), i:0, startedAt: Date.now(), finished:false};
+}
+function buildDaily(){
+  const N = 10;
+  const wsum = pack.domains.reduce((s, d) => s + d.weight, 0) || 1;
+  const due = [], fresh = [], rest = [];
+  pack.questions.forEach(q => {
+    const r = progress.q[q.id];
+    if(!r) fresh.push(q);
+    else if(isDue(r)) due.push(q);
+    else rest.push(q);
+  });
+  due.sort((a, b) => { const ra = progress.q[a.id], rb = progress.q[b.id]; return (ra.last - rb.last) || (ra.t - rb.t); });
+  const weak = new Set(weakestSubs(8).map(x => x.s.id));
+  const freshRank = q => -(pack._dom[q.domain].weight / wsum) - (weak.has(q.subdomain) ? .3 : 0) - Math.random() * .25;
+  fresh.sort((a, b) => freshRank(a) - freshRank(b));
+  const pick = [];
+  const take = (arr, k) => { while(k > 0 && arr.length){ const q = arr.shift(); if(!pick.includes(q)){ pick.push(q); k--; } } };
+  take(due, 5);
+  take(fresh, N - pick.length);
+  take(due, N - pick.length);
+  take(shuffle(rest), N - pick.length);
+  if(!pick.length) return null;
+  return {kind:"daily", title:"Daily check", items: shuffle(pick).map(mkItem), i:0, startedAt: Date.now(), finished:false};
+}
+function buildDrill(){
+  const picked = []; const used = new Set();
+  const rank = q => { const r = progress.q[q.id]; if(!r) return 1; if(!r.last) return 0; return 2 + r.c / r.a; };
+  for(const x of weakestSubs(99)){
+    const pool = pack.questions.filter(q => q.subdomain === x.s.id && !used.has(q.id)).sort((a, b) => rank(a) - rank(b));
+    for(const q of pool.slice(0, 3)){ picked.push(q); used.add(q.id); }
+    if(picked.length >= 12) break;
+  }
+  if(!picked.length) return null;
+  return {kind:"drill", title:"Weak-area drill", items: shuffle(picked.slice(0, 12)).map(mkItem), i:0, startedAt: Date.now(), finished:false};
+}
+
+/* ---------- routing ---------- */
+const VIEWS = {dashboard, today, plan: planView, learn: learnView, lesson: lessonView, exam: examStart, study: studyStart, drill: drillStart,
+  recall: recallView, traps: trapsView, session: sessionView, results: resultsView, progress: progressView, blueprint: blueprintView,
+  library: libraryView, packs: packsView, feedback: feedbackView, disclosure: disclosureView, security: securityView};
+const NAV_OF = {lesson:"learn", drill:"study", results:null, security:"disclosure"};
+function route(){
+  stopTimer();
+  let v = currentView;
+  if(v === "home") v = "dashboard";
+  if(!Object.prototype.hasOwnProperty.call(VIEWS, v)) v = "dashboard";
+  if(v === "session" && (!session || session.finished)) v = session && session.finished ? "results" : "dashboard";
+  currentView = v;
+  document.body.classList.toggle("focus", v === "session" || (v === "recall" && !!recallQ));
+  let navKey = NAV_OF[v] !== undefined ? NAV_OF[v] : v;
+  if(v === "session" && session) navKey = session.kind === "exam" ? "exam" : session.kind === "daily" ? "today" : "study";
+  document.querySelectorAll("[data-nav]").forEach(a => { if(a.dataset.nav === navKey) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  VIEWS[v](viewArg);
+  renderResume();
+  if(v !== "session" && v !== "results"){ prefs.last = {v, arg: viewArg}; store.set(K.prefs, prefs); }
+  window.scrollTo(0, 0);
+}
+function go(v, arg){
+  currentView = v; viewArg = arg == null ? null : String(arg);
+  try{ history.replaceState(null, "", "#" + v + (viewArg ? "/" + viewArg : "")); }catch(e){}
+  route();
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]');
+  if(!a) return;
+  const h = a.getAttribute("href").slice(1);
+  if(!h) return;
+  e.preventDefault();
+  const [v, ...rest] = h.split("/");
+  go(v, rest.length ? rest.join("/") : null);
+});
+window.addEventListener("hashchange", () => {
+  try{ const h = location.hash.slice(1); const [v, ...rest] = h.split("/"); if(v && (v !== currentView || (rest.join("/") || null) !== viewArg)){ currentView = v; viewArg = rest.length ? rest.join("/") : null; route(); } }catch(e){}
+});
+
+async function startSession(s){
+  if(!s){ openDialog(`<h2 style="margin-top:0">No questions here yet</h2><p>This pack doesn’t have practice questions for that selection yet. Read the lesson, or pick another subdomain.</p><div class="row" style="justify-content:flex-end;margin-top:1rem"><button class="btn gold" data-close>OK</button></div>`); return; }
+  if(session && !session.finished){
+    const ok = await confirmBox("Replace the session in progress?", `Your unfinished ${session.title.toLowerCase()} will be discarded. Answers already given stay in your progress.`, "Start new session", true);
+    if(!ok) return;
+  }
+  session = s; saveSession(); go("session");
+}
+
+function renderResume(){
+  const el = document.getElementById("resume");
+  const show = session && !session.finished && currentView !== "session";
+  el.hidden = !show;
+  if(!show){ el.innerHTML = ""; return; }
+  const ex = session.kind === "exam";
+  el.innerHTML = `<div class="resume-in"><span>${esc(session.title)} in progress: question ${session.i + 1} of ${session.items.length}${ex ? `, ${esc(fmtTime((session.endsAt - Date.now()) / 1000))} left (the timer keeps running)` : ""}.</span><button class="btn" id="resume-go">Back to ${ex ? "exam" : "questions"}</button></div>`;
+  el.querySelector("#resume-go").addEventListener("click", () => go("session"));
+}
+
+/* ---------- dashboard ---------- */
+function examMap(){
+  const doms = pack.domains.map(d => {
+    const st = stats(q => q.domain === d.id);
+    const cells = d.subdomains.map(s => {
+      const ss = stats(q => q.subdomain === s.id);
+      const label = `${s.id} ${s.name}: ${ss.seen} of ${ss.total} answered, ${ss.mastery == null ? "not started" : pct(ss.mastery) + " correct"}`;
+      return `<button class="map-cell" style="background:${masteryColor(ss.mastery)}" data-sub="${esc(s.id)}" title="${esc(label)}" aria-label="${esc(label)}. Open lesson."></button>`;
+    }).join("");
+    return `<div class="map-dom" style="flex:${Math.max(d.weight, 4)} 1 0">
+      <div class="map-cells">${cells}</div>
+      <div class="map-label"><span><b>${esc(d.id)}</b> ${esc(d.weight)}%</span><span>${pct(st.mastery)}</span></div></div>`;
+  }).join("");
+  return `<div class="map" aria-label="Exam map: domains sized by exam weight, colored by your results">
+    <div class="map-strip">${doms}</div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--m0)"></i>Not started</span>
+      <span><i class="sw" style="background:var(--m1)"></i>Under 50%</span>
+      <span><i class="sw" style="background:var(--m2)"></i>50–69%</span>
+      <span><i class="sw" style="background:var(--m3)"></i>70–84%</span>
+      <span><i class="sw" style="background:var(--m4)"></i>85%+</span>
+    </div></div>`;
+}
+function examCountdown(){
+  if(!progress.examDate) return null;
+  return daysBetween(dkey(), progress.examDate);
+}
+function dueCounts(){
+  let qd = 0; pack.questions.forEach(q => { const r = progress.q[q.id]; if(r && isDue(r)) qd++; });
+  let cd = 0, cn = 0; pack.flashcards.forEach(c => { const r = progress.cards[c.id]; if(!r) cn++; else if(Date.now() - r.t >= BOX_DAYS[r.box || 0] * DAY - 3600000) cd++; });
+  return {qd, cd, cn};
+}
+function dashboard(){
+  const today = progress.days[dkey()] || {};
+  const doneToday = !!today.daily;
+  const cd = examCountdown();
+  const dc = dueCounts();
+  const weak = weakestSubs(1)[0];
+  const plan = buildPlan();
+  const todayTask = plan && plan.days.find(x => x.key === dkey());
+  const banner = prefs.bannerSeen ? "" : `<div class="callout" role="note"><div class="bang" aria-hidden="true">!</div><div>
+      <h3>Read this first. It is short and it matters.</h3>
+      <p>This is an independent study aid built from the public ${esc(pack.name)} outline and suggested references. It is not official material, the issuing body has not reviewed or endorsed it, and it can’t guarantee a passing result. Once you sit the exam you are bound by the candidate confidentiality agreement, so never add real exam questions here.</p>
+      <p>Your work stays on this device. Nothing is sent to a server.</p>
+      <div class="row" style="margin-top:.8rem"><button class="btn gold" id="ban-ok">Got it</button><a class="btn quiet" href="#disclosure">Full disclosure</a></div></div></div>`;
+  $app.innerHTML = `
+    <h1 class="sr">Dashboard</h1>
+    ${banner}
+    <div class="hero">
+      <div class="hero-main">
+        <img class="greeter" src="__GREETER__" alt="" width="215" height="520">
+        <p class="bubble" aria-hidden="true">${doneToday ? "Nice work today!" : "Ready for today’s 10?"}</p>
+        <p class="eyebrow">Today, ${esc(fmtDay(dkey(), {weekday:"long", month:"long", day:"numeric"}))}</p>
+        <h2>${doneToday ? "Daily check done" : "Daily check: 10 questions"}</h2>
+        <p style="color:var(--muted);margin:.2rem 0 1rem">${doneToday ? `You scored ${today.dc} of ${today.dn}. Keep going with recall or a lesson.` : "Rapid fire. Tap an answer, see why, move on. About 8 minutes."}</p>
+        <div class="row">
+          <button class="btn gold" id="go-daily">${doneToday ? "Run another check" : "Start daily check"}</button>
+          <a class="btn" href="#recall">Rapid recall${dc.cd + dc.cn ? ` (${dc.cd + dc.cn})` : ""}</a>
+        </div>
+        ${todayTask ? `<p class="small" style="margin:1rem 0 0">Plan for today: ${planTaskHtml(todayTask)}</p>` : (progress.examDate ? "" : `<p class="small" style="margin:1rem 0 0"><a href="#plan">Set your exam date</a> to get a day-by-day plan.</p>`)}
+      </div>
+      <div class="stats">
+        <div class="stat"><b class="gold">${streak()}</b><span>Day streak</span></div>
+        <div class="stat"><b>${cd == null ? "–" : Math.max(cd, 0)}</b><span>Days to exam</span></div>
+        <div class="stat"><b>${pct(weightedScore())}</b><span>Weighted score</span></div>
+        <div class="stat"><b>${dc.qd}</b><span>Questions due</span></div>
+        <div class="stat"><b>${Object.keys(progress.read).length}/${pack.lessons.length}</b><span>Lessons read</span></div>
+        <div class="stat"><b>${progress.sims.length}</b><span>Exams taken</span></div>
+      </div>
+    </div>
+    <h2>Exam map</h2>
+    <p class="small" style="margin-top:-.4rem">Each block is a domain sized by its exam weight. Tap a strip to open that subdomain’s lesson.</p>
+    ${examMap()}
+    ${weak && weak.seen ? `<div class="notice">Weakest area right now: <b>${esc(weak.s.id)} ${esc(weak.s.name)}</b>. <a href="#lesson/${esc(weak.s.id)}">Review the lesson</a> or <a href="#drill">run a weak-area drill</a>.</div>` : ""}
+    <h2>Train</h2>
+    <div class="tiles">
+      <a class="tile" href="#learn"><strong>Learn</strong><span>A short lesson for every subdomain, with traps and exam tips.</span></a>
+      <a class="tile" href="#exam"><strong>Exams</strong><span>Timed, weighted like the real exam, no going back.</span></a>
+      <a class="tile" href="#study"><strong>Domain drill</strong><span>Questions by domain or subdomain with explanations.</span></a>
+      <a class="tile" href="#traps"><strong>Trap patterns</strong><span>The wrong-answer patterns this exam tends to use.</span></a>
+    </div>`;
+  const b = $("#ban-ok"); if(b) b.addEventListener("click", () => { prefs.bannerSeen = true; savePrefs(); dashboard(); });
+  $("#go-daily").addEventListener("click", () => startSession(buildDaily()));
+  $app.querySelectorAll(".map-cell").forEach(c => c.addEventListener("click", () => go("lesson", c.dataset.sub)));
+}
+
+/* ---------- today ---------- */
+function today(){
+  const t = progress.days[dkey()] || {};
+  const dc = dueCounts();
+  const recent = [];
+  for(let i = 13; i >= 0; i--){ const k = dkey(Date.now() - i * DAY); const d = progress.days[k]; recent.push(`<i class="${d && d.daily ? "ok" : ""} ${i === 0 ? "cur" : ""}" title="${esc(fmtDay(k))}${d && d.daily ? ": done" : ""}"></i>`); }
+  const weak = weakestSubs(3);
+  $app.innerHTML = `
+    <p class="eyebrow">${esc(fmtDay(dkey(), {weekday:"long", month:"long", day:"numeric"}))}</p>
+    <h1>Today</h1>
+    <p class="lede">A daily check keeps every domain warm. Missed questions come back tomorrow; correct ones return after 1, 3, 7, 14 and 30 days.</p>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div><h2 style="margin:0">Daily check</h2>
+        <p class="small" style="margin:.2rem 0 0">${t.daily ? `Done today: ${t.dc} of ${t.dn} correct.` : `10 questions: ${Math.min(dc.qd, 5)} due for review, the rest new or from weak areas.`}</p></div>
+        <button class="btn gold" id="go-daily">${t.daily ? "Run another" : "Start"}</button>
+      </div>
+      <div style="margin-top:1rem"><p class="mono" style="color:var(--muted);margin:0 0 .4rem">Last 14 days · ${streak()} day streak</p><div class="dots">${recent.join("")}</div></div>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div><h2 style="margin:0">Rapid recall</h2><p class="small" style="margin:.2rem 0 0">${dc.cd} flashcards due, ${dc.cn} new.</p></div>
+        <a class="btn" href="#recall">Open flashcards</a>
+      </div>
+    </div>
+    <div class="card">
+      <h2 style="margin:0 0 .4rem">Suggested lessons</h2>
+      ${weak.map(x => `<a class="sub-row" href="#lesson/${esc(x.s.id)}"><span class="id">${esc(x.s.id)}</span><span class="nm">${esc(x.s.name)}</span><span class="st">${x.seen ? pct(stats(q => q.subdomain === x.s.id).mastery) : "new"}</span></a>`).join("")}
+    </div>`;
+  $("#go-daily").addEventListener("click", () => startSession(buildDaily()));
+}
+
+/* ---------- plan ---------- */
+function buildPlan(){
+  if(!progress.examDate) return null;
+  const start = progress.planStart || dkey();
+  const total = daysBetween(start, progress.examDate);
+  if(total < 1) return {days: [], start, total};
+  const order = pack.domains.slice().sort((a, b) => b.weight - a.weight).flatMap(d => d.subdomains.map(s => s.id));
+  const days = [];
+  const reviewDays = total >= 14 ? 6 : total >= 7 ? 3 : 1;
+  const learnDays = Math.max(1, total - reviewDays);
+  const per = Math.ceil(order.length / learnDays);
+  for(let i = 0; i < total; i++){
+    const key = dkey(fromKey(start).getTime() + i * DAY + 3600000);
+    let task;
+    if(i < learnDays){
+      const subs = order.slice(i * per, (i + 1) * per);
+      task = subs.length ? {type:"learn", subs} : {type:"review"};
+    } else {
+      const j = i - learnDays;
+      const left = total - i;
+      task = left === 1 ? {type:"rest"} : (j % 3 === 0 ? {type:"exam"} : {type:"review"});
+    }
+    days.push({key, task});
+  }
+  return {days, start, total};
+}
+function planTaskHtml(d){
+  const t = d.task;
+  if(t.type === "learn") return `<b>Learn</b> ${t.subs.map(s => `<a href="#lesson/${esc(s)}">${esc(s)}</a>`).join(", ")}, then the daily check.`;
+  if(t.type === "exam") return `<b>Full practice exam</b>, then review what you missed.`;
+  if(t.type === "rest") return `<b>Light day.</b> Daily check and trap patterns only. Rest before the exam.`;
+  return `<b>Review</b>: weak-area drill, rapid recall and the daily check.`;
+}
+function planView(){
+  const p = buildPlan();
+  const td = dkey();
+  const rows = p ? p.days.map(d => {
+    const cls = d.key === td ? "today" : d.key < td ? "past" : "";
+    return `<div class="day ${cls}"><input type="checkbox" data-k="${esc(d.key)}" ${progress.plan[d.key] ? "checked" : ""} aria-label="Mark ${esc(fmtDay(d.key))} done">
+      <div class="d">${esc(fmtDay(d.key))}${d.key === td ? "<br>Today" : ""}</div><div class="w">${planTaskHtml(d)}</div></div>`;
+  }).join("") : "";
+  const doneN = p ? p.days.filter(d => progress.plan[d.key]).length : 0;
+  $app.innerHTML = `
+    <h1>Study plan</h1>
+    <p class="lede">Set your exam date and the plan spreads every lesson across the days you have, heaviest domains first, then finishes with full exams and review.</p>
+    <div class="card">
+      <div class="row" style="align-items:flex-end">
+        <div class="field" style="margin:0"><label for="pl-date">Exam date</label><input type="date" id="pl-date" value="${esc(progress.examDate || "")}" min="${esc(dkey())}"></div>
+        <button class="btn gold" id="pl-save">${p ? "Rebuild plan from today" : "Build my plan"}</button>
+      </div>
+      ${p ? `<p class="small" style="margin:.8rem 0 0">${p.total} days, ${doneN} marked done. Rebuilding starts the plan from today and keeps your progress.</p>` : ""}
+    </div>
+    ${p && p.days.length ? `<h2>Day by day</h2><div class="plan">${rows}</div>` : p ? `<div class="notice">Your exam date is today or has passed. Pick a future date.</div>` : ""}`;
+  $("#pl-save").addEventListener("click", () => {
+    const v = $("#pl-date").value;
+    if(!v || v <= dkey()){ say("Choose a date after today."); $("#pl-date").focus(); return; }
+    progress.examDate = v; progress.planStart = dkey(); saveProgress(); planView(); say("Plan built.");
+  });
+  $app.querySelectorAll("[data-k]").forEach(c => c.addEventListener("change", () => { if(c.checked) progress.plan[c.dataset.k] = true; else delete progress.plan[c.dataset.k]; saveProgress(); }));
+}
+
+/* ---------- learn ---------- */
+function learnView(){
+  const blocks = pack.domains.map(d => {
+    const rows = d.subdomains.map(s => {
+      const has = !!pack._lesson[s.id];
+      const st = stats(q => q.subdomain === s.id);
+      const status = progress.read[s.id] ? "Read" : has ? "Not read" : "No lesson";
+      return `<a class="sub-row" href="#lesson/${esc(s.id)}"><span class="id">${esc(s.id)}</span><span class="nm">${esc(s.name)}</span><span class="st">${status} · ${st.mastery == null ? "–" : pct(st.mastery)}</span></a>`;
+    }).join("");
+    return `<div class="dom-block"><h3><span>${esc(d.id)} ${esc(d.name)}</span><span class="mono" style="color:var(--gold)">${esc(d.weight)}%</span></h3>${rows}</div>`;
+  }).join("");
+  $app.innerHTML = `<h1>Learn</h1>
+    <p class="lede">One short lesson per subdomain: the core ideas, the trap the exam sets and a tip. Read it, then quiz yourself on that subdomain.</p>
+    <div class="lesson-list">${blocks}</div>`;
+}
+function lessonView(sid){
+  const s = pack._sub[sid];
+  if(!s){ go("learn"); return; }
+  const l = pack._lesson[sid];
+  const d = pack._dom[s.domain];
+  const subs = d.subdomains.map(x => x.id);
+  const all = pack.domains.flatMap(x => x.subdomains.map(y => y.id));
+  const idx = all.indexOf(sid);
+  const prev = all[idx - 1], next = all[idx + 1];
+  const qn = pack.questions.filter(q => q.subdomain === sid).length;
+  const cn = pack.flashcards.filter(c => c.subdomain === sid).length;
+  const refs = l ? (l.references || []).map(r => pack._ref[r]).filter(Boolean) : [];
+  $app.innerHTML = `<div class="lesson">
+    ${session && !session.finished ? `<p><a class="btn" href="#session">Back to question ${session.i + 1}</a></p>` : ""}
+    <p class="eyebrow">${esc(d.id)} ${esc(d.name)} · ${esc(d.weight)}% of exam</p>
+    <h1>${esc(s.id)} ${esc(s.name)}</h1>
+    ${l ? `<p style="font-size:1.12rem">${esc(l.summary)}</p>
+      <h2>Key ideas</h2><ul>${(l.points || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+      ${(l.traps || []).length ? `<div class="trapbox"><span class="mono">Trap</span>${l.traps.map(x => `<p>${esc(x)}</p>`).join("")}</div>` : ""}
+      ${l.tip ? `<div class="tipbox"><span class="mono">Exam tip</span><p>${esc(l.tip)}</p></div>` : ""}
+      ${refs.length ? `<p class="small">Go deeper: ${refs.map(r => `<i>${esc(r.title)}</i>`).join("; ")}</p>` : ""}`
+      : `<div class="notice">No lesson for this subdomain in this pack yet.</div>`}
+    ${l ? `<p class="small" style="color:var(--dim)">Spot an error or something missing? <a href="${mailtoHref(`Trainer feedback: lesson ${s.id}`, [`Lesson: ${s.id} ${s.name}`, "", "What looks wrong or is missing:", "", "", "Suggested fix, and a source if you have one:", "", "", trainerTag()])}">Email a fix for this lesson</a></p>` : ""}
+    <div class="row" style="margin-top:1.4rem">
+      <button class="btn gold" id="ls-quiz" ${qn ? "" : "disabled"}>Quiz this subdomain${qn ? ` (${qn})` : ""}</button>
+      <button class="btn" id="ls-cards" ${cn ? "" : "disabled"}>Flashcards${cn ? ` (${cn})` : ""}</button>
+      ${l ? `<button class="btn quiet" id="ls-read">${progress.read[sid] ? "Marked as read" : "Mark as read"}</button>` : ""}
+    </div>
+    <div class="row" style="justify-content:space-between;margin-top:2rem;border-top:1px solid var(--line);padding-top:1rem">
+      ${prev ? `<a class="btn quiet" href="#lesson/${esc(prev)}">Previous: ${esc(prev)}</a>` : "<span></span>"}
+      ${next ? `<a class="btn quiet" href="#lesson/${esc(next)}">Next: ${esc(next)}</a>` : ""}
+    </div></div>`;
+  $("#ls-quiz").addEventListener("click", () => { markRead(sid); startSession(buildStudy({domain:s.domain, sub:sid, filter:"all", count:"all"})); });
+  $("#ls-cards").addEventListener("click", () => { markRead(sid); recallSet = {sub:sid}; go("recall"); });
+  const r = $("#ls-read"); if(r) r.addEventListener("click", () => { markRead(sid); r.textContent = "Marked as read"; say("Marked as read."); });
+}
+function markRead(sid){ if(pack._lesson[sid] && !progress.read[sid]){ progress.read[sid] = Date.now(); saveProgress(); } }
+
+/* ---------- exams ---------- */
+function examStart(){
+  const ex = pack.exam, n = pack.questions.length;
+  const fullN = Math.min(ex.itemCount, n), shortN = Math.min(40, ex.itemCount, n);
+  const fullMin = Math.max(5, Math.round(ex.timeLimitMinutes * fullN / ex.itemCount));
+  const shortMin = Math.max(5, Math.round(ex.timeLimitMinutes * shortN / ex.itemCount));
+  const rows = pack.domains.map(d => `<tr><td>${esc(d.id)} ${esc(d.name)}</td><td class="num">${esc(d.weight)}%</td><td class="num">${pack.questions.filter(q => q.domain === d.id).length}</td></tr>`).join("");
+  $app.innerHTML = `
+    <h1>Exams</h1>
+    <p class="lede">Questions are drawn by domain weight and shuffled. ${ex.allowBack ? "You can move back and forth before submitting." : "Like the real exam, you can’t skip a question or go back to one."}</p>
+    ${fullN < ex.itemCount ? `<div class="notice">This pack has ${n} questions, fewer than the ${ex.itemCount} on the real exam. The full exam uses all ${fullN} and scales the time to the real pace of about ${Math.round(ex.timeLimitMinutes * 60 / ex.itemCount)} seconds per question.</div>` : ""}
+    <div class="row" style="margin:1.25rem 0 2rem">
+      <button class="btn gold" id="go-full">Full exam: ${fullN} questions, ${fmtHM(fullMin)}</button>
+      ${shortN < fullN ? `<button class="btn" id="go-short">Short exam: ${shortN} questions, ${fmtHM(shortMin)}</button>` : ""}
+    </div>
+    <h2>How questions are drawn</h2>
+    <div class="tablewrap"><table><thead><tr><th>Domain</th><th class="num">Weight</th><th class="num">In pack</th></tr></thead><tbody>${rows}</tbody></table></div>
+    ${ex.notes ? `<p class="small" style="margin-top:1rem">${esc(ex.notes)}</p>` : ""}`;
+  $("#go-full").addEventListener("click", () => startSession(buildExam("full")));
+  const s = $("#go-short"); if(s) s.addEventListener("click", () => startSession(buildExam("short")));
+}
+
+/* ---------- domain drill ---------- */
+function studyStart(){
+  const domOpts = `<option value="all">All domains</option>` + pack.domains.map(d => `<option value="${esc(d.id)}">${esc(d.id)} ${esc(d.name)}</option>`).join("");
+  $app.innerHTML = `
+    <h1>Domain drill</h1>
+    <p class="lede">Pick an area. Tap an answer to see right away whether it’s correct and why.</p>
+    <div class="card" style="max-width:38rem">
+      <div class="field"><label for="f-dom">Domain</label><select id="f-dom">${domOpts}</select></div>
+      <div class="field"><label for="f-sub">Subdomain</label><select id="f-sub"></select></div>
+      <div class="field"><span class="lbl">Questions</span>
+        <div class="seg" role="group" aria-label="Which questions" id="f-filter">
+          <button data-v="all" aria-pressed="true">All</button><button data-v="unseen" aria-pressed="false">Not answered</button><button data-v="missed" aria-pressed="false">Missed last time</button></div></div>
+      ${origins().length ? `<div class="field"><label for="f-src">Question set</label><select id="f-src"><option value="all">All questions</option>${origins().map(o => `<option value="${esc(o)}">${esc(o)} questions only</option>`).join("")}<option value="__core">Trainer questions only</option></select></div>` : ""}
+      <div class="field"><label for="f-count">How many</label><select id="f-count"><option value="10">10</option><option value="20" selected>20</option><option value="all">All matching</option></select></div>
+      <p class="small" id="f-match"></p>
+      <button class="btn gold" id="f-go">Start drill</button>
+    </div>
+    <div class="card" style="max-width:38rem"><div class="row" style="justify-content:space-between"><div><h2 style="margin:0">Weak-area drill</h2><p class="small" style="margin:.2rem 0 0">12 questions picked from your lowest-scoring subdomains.</p></div><a class="btn" href="#drill">Open</a></div></div>`;
+  const fd = $("#f-dom"), fs = $("#f-sub"), fc = $("#f-count"), ff = $("#f-filter");
+  let filter = "all";
+  function fillSubs(){
+    const d = fd.value;
+    const list = d === "all" ? [] : pack._dom[d].subdomains;
+    fs.innerHTML = `<option value="all">All subdomains</option>` + list.map(s => `<option value="${esc(s.id)}">${esc(s.id)} ${esc(s.name)}</option>`).join("");
+    fs.disabled = d === "all";
+    count();
+  }
+  const fsrc = $("#f-src");
+  function opts(){ return {domain: fd.value, sub: fs.value, filter, count: fc.value, src: fsrc ? fsrc.value : "all"}; }
+  function count(){
+    const o = opts();
+    let qs = pack.questions.filter(q => (o.domain === "all" || q.domain === o.domain) && (o.sub === "all" || q.subdomain === o.sub) && srcMatch(q, o.src));
+    if(filter === "unseen") qs = qs.filter(q => !progress.q[q.id]);
+    if(filter === "missed") qs = qs.filter(q => progress.q[q.id] && !progress.q[q.id].last);
+    $("#f-match").textContent = qs.length ? `${qs.length} question${qs.length === 1 ? "" : "s"} match.` : "No questions match. Try another filter.";
+    $("#f-go").disabled = !qs.length;
+  }
+  fd.addEventListener("change", fillSubs); fs.addEventListener("change", count); if(fsrc) fsrc.addEventListener("change", count);
+  ff.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    filter = b.dataset.v; ff.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false")); count();
+  }));
+  $("#f-go").addEventListener("click", () => startSession(buildStudy(opts())));
+  fillSubs();
+}
+function drillStart(){
+  const s = buildDrill();
+  if(!s){ $app.innerHTML = `<h1>Weak-area drill</h1><div class="empty">No questions in this pack yet.</div>`; return; }
+  const subs = [...new Set(s.items.map(it => pack._q[it.id].subdomain))].sort();
+  $app.innerHTML = `
+    <h1>Weak-area drill</h1>
+    <p class="lede">${s.items.length} questions, weighted toward ones you missed and areas you haven’t started.</p>
+    <p>Covers ${subs.map(x => `${esc(x)} ${esc(pack._sub[x].name)}`).join("; ")}.</p>
+    <button class="btn gold" id="d-go">Start drill</button>`;
+  $("#d-go").addEventListener("click", () => startSession(s));
+}
+
+/* ---------- session ---------- */
+function sessionView(){
+  const s = session, it = s.items[s.i], q = pack._q[it.id];
+  const isExam = s.kind === "exam";
+  const sub = pack._sub[q.subdomain];
+  const optHtml = it.order.map((orig, k) => {
+    let cls = "";
+    if(it.done && !isExam){ if(orig === q.answer) cls = "correct"; else if(orig === it.pick) cls = "wrong"; }
+    return `<li><button class="opt ${cls}" role="radio" aria-checked="${it.pick === orig}" data-o="${orig}" ${it.done && !isExam ? "disabled" : ""}>
+      <span class="key">${LETTERS[k]}</span><span>${esc(q.options[orig])}</span></button></li>`;
+  }).join("");
+  let fb = "";
+  if(it.done && !isExam){
+    const ok = it.pick === q.answer;
+    fb = `<div class="feedback ${ok ? "" : "bad"}" tabindex="-1" id="fb">
+      <h3>${ok ? "Correct" : "Not quite. The answer is " + LETTERS[it.order.indexOf(q.answer)] + "."}</h3>
+      <p>${esc(q.explanation || "")}</p>
+      ${q.anchor ? `<p class="anchor"><span class="mono">Build it</span> ${esc(q.anchor)}</p>` : ""}
+      ${whereHtml(q)}
+      ${pack._lesson[q.subdomain] ? `<p class="small" style="margin-top:.6rem"><a href="#lesson/${esc(q.subdomain)}">Review lesson ${esc(q.subdomain)}</a></p>` : ""}
+      <p class="small qid" style="margin-top:.6rem;color:var(--dim)">Question id ${esc(q.id)} · <a href="${questionReportHref(q)}">Report a problem with this question</a></p></div>`;
+  }
+  const last = s.i === s.items.length - 1;
+  let primary;
+  if(isExam){
+    primary = s.allowBack
+      ? `<button class="btn gold" id="act">${last ? "Finish exam" : "Next question"}</button>`
+      : `<button class="btn gold" id="act" ${it.pick == null ? "disabled" : ""}>${last ? "Submit and finish" : "Submit answer"}</button>`;
+  } else {
+    primary = it.done ? `<button class="btn gold" id="act">${last ? "See results" : "Next question"}</button>` : "";
+  }
+  const dots = s.kind === "exam" ? "" : `<div class="dots" aria-hidden="true">${s.items.map((x, k) => {
+    const qq = pack._q[x.id]; const c = x.done ? (x.pick === qq.answer ? "ok" : "bad") : ""; return `<i class="${c} ${k === s.i ? "cur" : ""}"></i>`; }).join("")}</div>`;
+  $app.innerHTML = `
+    <div class="qwrap">
+      <div class="qbar"><span class="mono">${esc(s.title)} · ${s.i + 1} of ${s.items.length}</span>
+        ${isExam ? `<span class="timer" id="timer" aria-label="Time remaining">${fmtTime((s.endsAt - Date.now()) / 1000)}</span>` : dots}</div>
+      <div class="progress" aria-hidden="true"><i style="width:${(s.i / s.items.length) * 100}%"></i></div>
+      ${isExam ? "" : `<div class="tag">${esc(sub.id)} ${esc(sub.name)}</div>`}
+      <p class="stem" id="stem">${esc(q.stem)}</p>
+      <ul class="opts" role="radiogroup" aria-labelledby="stem">${optHtml}</ul>
+      ${fb}
+      <div class="actions">
+        <div class="row">
+          ${isExam && s.allowBack && s.i > 0 ? `<button class="btn" id="prev">Previous</button>` : ""}
+          <button class="btn quiet" id="quit">${isExam ? "End exam" : "End session"}</button>
+        </div>
+        ${primary}
+      </div>
+      <p class="small" style="margin-top:1.4rem">Keyboard: A–${LETTERS[it.order.length - 1]} or 1–${it.order.length} to answer, Enter to continue.</p>
+    </div>`;
+  $app.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => choose(+b.dataset.o)));
+  const act = $("#act"); if(act) act.addEventListener("click", advance);
+  $("#quit").addEventListener("click", quit);
+  const pv = $("#prev"); if(pv) pv.addEventListener("click", () => { s.i--; saveSession(); sessionView(); });
+  if(isExam) startTimer();
+  const f = document.getElementById("fb"); if(f){ f.focus({preventScroll:true}); f.scrollIntoView({block:"nearest", behavior:"smooth"}); }
+}
+function choose(orig){
+  const s = session, it = s.items[s.i], q = pack._q[it.id];
+  if(s.kind === "exam"){
+    if(!s.allowBack && it.done) return;
+    it.pick = orig; saveSession();
+    $app.querySelectorAll(".opt").forEach(b => b.setAttribute("aria-checked", +b.dataset.o === orig ? "true" : "false"));
+    const act = $("#act"); if(act) act.disabled = false;
+    return;
+  }
+  if(it.done) return;
+  it.pick = orig; it.done = true;
+  const ok = orig === q.answer;
+  record(q.id, ok); saveProgress(); saveSession();
+  say(ok ? "Correct." : "Incorrect.");
+  sessionView();
+}
+function advance(){
+  const s = session, it = s.items[s.i];
+  if(s.kind === "exam"){
+    if(!s.allowBack){ if(it.pick == null) return; it.done = true; }
+    if(s.i === s.items.length - 1) return finish();
+    s.i++; saveSession(); sessionView(); return;
+  }
+  if(!it.done) return;
+  if(s.i === s.items.length - 1) return finish();
+  s.i++; saveSession(); sessionView();
+}
+async function quit(){
+  const s = session;
+  const answered = s.items.filter(it => s.kind === "exam" ? it.pick != null : it.done).length;
+  if(s.kind === "exam"){
+    const ok = await confirmBox("End the exam now?", `You’ve answered ${answered} of ${s.items.length}. Unanswered questions count as incorrect.`, "End and score exam", true);
+    if(ok) finish();
+  } else {
+    if(!answered){ session = null; saveSession(); go("dashboard"); return; }
+    finish();
+  }
+}
+function finish(){
+  stopTimer();
+  const s = session;
+  s.finished = true; s.endedAt = Date.now();
+  if(s.kind === "exam"){
+    const byDom = {}; let correct = 0;
+    s.items.forEach(it => {
+      const q = pack._q[it.id]; const ok = it.pick === q.answer;
+      if(it.pick != null) record(q.id, ok);
+      if(ok) correct++;
+      byDom[q.domain] = byDom[q.domain] || [0, 0]; byDom[q.domain][1]++; if(ok) byDom[q.domain][0]++;
+    });
+    progress.sims.push({at: s.endedAt, title: s.title, correct, n: s.items.length, seconds: Math.round((s.endedAt - s.startedAt) / 1000), byDom});
+  }
+  if(s.kind === "daily"){
+    const done = s.items.filter(it => it.done);
+    const k = dkey(); const d = progress.days[k] || {n:0, c:0};
+    if(done.length >= Math.min(5, s.items.length)){
+      d.daily = true;
+      d.dn = (d.dn || 0) + done.length; d.dc = (d.dc || 0) + done.filter(it => it.pick === pack._q[it.id].answer).length;
+    }
+    progress.days[k] = d;
+  }
+  saveProgress(); saveSession(); go("results");
+}
+function startTimer(){
+  stopTimer();
+  const tick = () => {
+    if(!session || session.finished) return stopTimer();
+    const left = (session.endsAt - Date.now()) / 1000;
+    const el = document.getElementById("timer");
+    if(el){ el.textContent = fmtTime(left); el.classList.toggle("low", left < 300); }
+    if(left <= 0){ say("Time is up."); finish(); }
+  };
+  tick(); timerId = setInterval(tick, 1000);
+}
+function stopTimer(){ if(timerId){ clearInterval(timerId); timerId = null; } }
+
+/* ---------- results ---------- */
+function resultsView(){
+  const s = session;
+  if(!s || !s.finished){ go("dashboard"); return; }
+  const isExam = s.kind === "exam";
+  const items = isExam ? s.items : s.items.filter(it => it.done);
+  const correct = items.filter(it => it.pick === pack._q[it.id].answer).length;
+  const n = isExam ? s.items.length : items.length;
+  const byDom = {};
+  items.forEach(it => { const q = pack._q[it.id]; byDom[q.domain] = byDom[q.domain] || [0, 0]; byDom[q.domain][1]++; if(it.pick === q.answer) byDom[q.domain][0]++; });
+  const domRows = pack.domains.filter(d => byDom[d.id]).map(d => { const [c, t] = byDom[d.id]; return `<tr><td>${esc(d.id)} ${esc(d.name)}</td><td class="num">${c} / ${t}</td><td class="num">${pct(c / t)}</td></tr>`; }).join("");
+  const pass = pack.exam.passingPercent;
+  const review = items.map(it => {
+    const q = pack._q[it.id], ok = it.pick === q.answer;
+    return {ok, html:`<div class="review-item"><p class="tag">${esc(q.subdomain)} ${esc(pack._sub[q.subdomain].name)} · <span class="${ok ? "mark-ok" : "mark-bad"}">${ok ? "Correct" : it.pick == null ? "Not answered" : "Incorrect"}</span></p>
+      <p><b>${esc(q.stem)}</b></p>
+      ${!ok && it.pick != null ? `<p>Your answer: ${esc(q.options[it.pick])}</p>` : ""}
+      <p>Correct answer: ${esc(q.options[q.answer])}</p>
+      <p class="small">${esc(q.explanation || "")} ${pack._lesson[q.subdomain] ? `<a href="#lesson/${esc(q.subdomain)}">Lesson ${esc(q.subdomain)}</a>` : ""}</p>${whereHtml(q)}<p class="small" style="color:var(--dim)">Question id ${esc(q.id)} · <a href="${questionReportHref(q)}">Report a problem</a></p></div>`};
+  });
+  const missed = review.filter(r => !r.ok);
+  const isDaily = s.kind === "daily";
+  $app.innerHTML = `
+    ${isDaily ? `<p class="eyebrow">Daily check complete · ${streak()} day streak</p>` : ""}
+    <h1>${esc(s.title)} results</h1>
+    <div class="row" style="align-items:baseline;gap:1rem;margin:.5rem 0 1rem"><span class="big-done">${correct}/${n}</span><span class="lede" style="margin:0">${pct(n ? correct / n : 0)} correct${isExam ? `, finished in ${fmtTime((s.endedAt - s.startedAt) / 1000)}` : ""}.${pass ? ` Target: ${pass}%.` : isExam ? " No official passing score is published for this exam." : ""}</span></div>
+    ${isDaily ? `<p>Missed questions come back in tomorrow’s check. Correct ones return later on a growing schedule.</p>` : ""}
+    <div class="tablewrap"><table><thead><tr><th>Domain</th><th class="num">Correct</th><th class="num">Score</th></tr></thead><tbody>${domRows}</tbody></table></div>
+    <div class="row" style="margin-top:1.5rem">
+      <a class="btn gold" href="#dashboard">Back to dashboard</a>
+      ${isDaily ? `<a class="btn" href="#recall">Rapid recall</a>` : `<a class="btn" href="#drill">Drill weak areas</a>`}
+    </div>
+    <h2>Review</h2>
+    <div class="seg" role="group" aria-label="Show" id="rv-f"><button data-v="wrong" aria-pressed="true">Missed (${missed.length})</button><button data-v="all" aria-pressed="false">All (${review.length})</button></div>
+    <div id="rv" class="card" style="margin-top:1rem"></div>`;
+  const rv = $("#rv");
+  const show = v => { const list = v === "all" ? review : missed; rv.innerHTML = list.length ? list.map(r => r.html).join("") : `<div class="empty">Nothing missed.</div>`; };
+  $app.querySelectorAll("#rv-f button").forEach(b => b.addEventListener("click", () => {
+    $app.querySelectorAll("#rv-f button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false")); show(b.dataset.v);
+  }));
+  show("wrong");
+}
+
+/* ---------- rapid recall ---------- */
+let recallSet = null, recallQ = null, recallI = 0, recallShown = false;
+function cardDue(c){ const r = progress.cards[c.id]; return !r || Date.now() - r.t >= BOX_DAYS[r.box || 0] * DAY - 3600000; }
+function recallView(){
+  if(!pack.flashcards.length){ $app.innerHTML = `<h1>Rapid recall</h1><div class="empty">This pack has no flashcards yet.</div>`; return; }
+  if(recallSet && recallQ){ return recallCard(); }
+  const sel = recallSet && recallSet.sub ? recallSet.sub : null;
+  if(sel){ recallQ = shuffle(pack.flashcards.filter(c => c.subdomain === sel)); recallI = 0; recallShown = false; return recallCard(); }
+  const dc = dueCounts();
+  const domOpts = pack.domains.map(d => { const n = pack.flashcards.filter(c => pack._sub[c.subdomain] && pack._sub[c.subdomain].domain === d.id).length; return n ? `<option value="${esc(d.id)}">${esc(d.id)} ${esc(d.name)} (${n})</option>` : ""; }).join("");
+  $app.innerHTML = `<h1>Rapid recall</h1>
+    <p class="lede">Flashcards on a spaced schedule. Say the answer in your head, flip, then be honest: “Missed it” brings the card back tomorrow, “Got it” pushes it further out.</p>
+    <div class="card" style="max-width:38rem">
+      <p style="margin-top:0"><b>${dc.cd}</b> due · <b>${dc.cn}</b> new · ${pack.flashcards.length} total</p>
+      <div class="row"><button class="btn gold" id="rc-due" ${dc.cd + dc.cn ? "" : "disabled"}>Study due and new</button><button class="btn" id="rc-all">All cards, shuffled</button></div>
+      <div class="field" style="margin:1.2rem 0 0"><label for="rc-dom">Or one domain</label><div class="row"><select id="rc-dom" style="flex:1">${domOpts}</select><button class="btn" id="rc-domgo">Start</button></div></div>
+    </div>`;
+  const start = list => { recallQ = list; recallI = 0; recallShown = false; recallSet = {}; if(!list.length){ say("No cards to study."); return; } recallCard(); };
+  $("#rc-due").addEventListener("click", () => start(shuffle(pack.flashcards.filter(cardDue)).slice(0, 25)));
+  $("#rc-all").addEventListener("click", () => start(shuffle(pack.flashcards)));
+  $("#rc-domgo").addEventListener("click", () => { const d = $("#rc-dom").value; start(shuffle(pack.flashcards.filter(c => pack._sub[c.subdomain] && pack._sub[c.subdomain].domain === d))); });
+}
+function recallCard(){
+  if(recallI >= recallQ.length){
+    const n = recallQ.length;
+    recallQ = null; recallSet = null;
+    document.body.classList.remove("focus");
+    $app.innerHTML = `<div class="flash"><p class="eyebrow">Rapid recall</p><h1>Set complete</h1><p class="lede">${n} card${n === 1 ? "" : "s"} reviewed. Cards you missed come back tomorrow.</p>
+      <div class="row"><a class="btn gold" href="#recall">Another set</a><a class="btn" href="#dashboard">Dashboard</a></div></div>`;
+    return;
+  }
+  document.body.classList.add("focus");
+  const c = recallQ[recallI];
+  const s = pack._sub[c.subdomain];
+  $app.innerHTML = `<div class="flash">
+    <div class="qbar"><span class="mono">Rapid recall · ${recallI + 1} of ${recallQ.length}</span><button class="btn quiet" id="rc-end">End</button></div>
+    <div class="progress" aria-hidden="true"><i style="width:${recallI / recallQ.length * 100}%"></i></div>
+    <p class="tag">${s ? esc(s.id + " " + s.name) : ""}</p>
+    <button class="fcard" id="fc" aria-expanded="${recallShown}">
+      <span class="front">${esc(c.front)}</span>
+      ${recallShown ? `<span class="back">${esc(c.back)}</span>` : `<span class="hint">Tap or press Space to flip</span>`}
+    </button>
+    <div class="row" style="justify-content:space-between;margin-top:1.1rem">
+      ${recallShown ? `<button class="btn danger" id="rc-miss">Missed it</button><button class="btn gold" id="rc-got">Got it</button>` : `<span></span><button class="btn gold" id="rc-flip">Show answer</button>`}
+    </div>
+    ${recallShown && s && pack._lesson[s.id] ? `<p class="small" style="margin-top:1rem"><a href="#lesson/${esc(s.id)}">Open lesson ${esc(s.id)}</a></p>` : ""}
+  </div>`;
+  const flip = () => { recallShown = true; recallCard(); const g = $("#rc-got"); if(g) g.focus(); };
+  $("#fc").addEventListener("click", () => { if(!recallShown) flip(); });
+  const f = $("#rc-flip"); if(f) f.addEventListener("click", flip);
+  const grade = ok => {
+    const r = progress.cards[c.id] || {box:0};
+    r.box = ok ? Math.min((r.box || 0) + 1, BOX_DAYS.length - 1) : 0; r.t = Date.now(); r.last = ok;
+    progress.cards[c.id] = r; saveProgress();
+    recallI++; recallShown = false; recallCard();
+  };
+  const m = $("#rc-miss"); if(m) m.addEventListener("click", () => grade(false));
+  const g = $("#rc-got"); if(g) g.addEventListener("click", () => grade(true));
+  $("#rc-end").addEventListener("click", () => { recallI = recallQ.length; recallCard(); });
+}
+
+/* ---------- traps ---------- */
+function trapsView(){
+  $app.innerHTML = `<h1>Trap patterns</h1>
+    <p class="lede">The wrong answers on this exam are usually plausible. These are the patterns behind them. Each lesson also names the trap for its subdomain.</p>
+    ${pack.traps.length ? pack.traps.map((t, i) => `<div class="card"><p class="mono" style="color:var(--gold);margin:0 0 .3rem">Pattern ${i + 1}</p><h3 style="margin:0 0 .3rem">${esc(t.title)}</h3><p style="margin:0">${esc(t.body)}</p></div>`).join("") : `<div class="empty">No trap patterns in this pack yet.</div>`}`;
+}
+
+/* ---------- progress ---------- */
+function bar(m){ return `<span class="bar"><i style="width:${m == null ? 0 : Math.round(m * 100)}%;background:${masteryColor(m)}"></i></span>`; }
+function progressView(){
+  const rows = pack.domains.map(d => {
+    const st = stats(q => q.domain === d.id);
+    const subRows = d.subdomains.map(s => {
+      const ss = stats(q => q.subdomain === s.id);
+      return `<tr><td style="padding-left:1.6rem"><a href="#lesson/${esc(s.id)}">${esc(s.id)}</a> ${esc(s.name)}</td><td class="num"></td><td class="num">${ss.seen} / ${ss.total}</td><td class="num">${bar(ss.mastery)}${pct(ss.mastery)}</td></tr>`;
+    }).join("");
+    return `<tr class="dom"><td>${esc(d.id)} ${esc(d.name)}</td><td class="num">${esc(d.weight)}%</td><td class="num">${st.seen} / ${st.total}</td><td class="num">${bar(st.mastery)}${pct(st.mastery)}</td></tr>${subRows}`;
+  }).join("");
+  const sims = progress.sims.slice().reverse().map(x => `<tr><td>${esc(fmtDate(x.at))}</td><td>${esc(x.title || "Practice exam")}</td><td class="num">${x.correct} / ${x.n}</td><td class="num">${pct(x.correct / x.n)}</td><td class="num">${fmtTime(x.seconds)}</td></tr>`).join("");
+  $app.innerHTML = `
+    <h1>Progress</h1>
+    <p class="lede">${esc(profile().name)}’s results. Scores use the most recent answer to each question. Weighted score: <b>${pct(weightedScore())}</b>.</p>
+    <div class="tablewrap"><table><thead><tr><th>Domain and subdomain</th><th class="num">Weight</th><th class="num">Answered</th><th class="num">Score</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <h2>Practice exams</h2>
+    ${sims ? `<div class="tablewrap"><table><thead><tr><th>Date</th><th>Exam</th><th class="num">Correct</th><th class="num">Score</th><th class="num">Time</th></tr></thead><tbody>${sims}</tbody></table></div>` : `<div class="card empty">No practice exams yet. <a href="#exam">Take one</a> to see your history.</div>`}
+    <h2>Your data</h2>
+    <p>Progress is saved in this browser only. Copy it out to back it up or move it to another device.</p>
+    <div class="row"><button class="btn" id="p-exp">Copy progress</button><button class="btn" id="p-imp">Paste progress</button><button class="btn danger" id="p-reset">Reset progress</button></div>`;
+  $("#p-exp").addEventListener("click", exportProgress);
+  $("#p-imp").addEventListener("click", importProgress);
+  $("#p-reset").addEventListener("click", async () => {
+    if(await confirmBox(`Reset ${profile().name}’s progress?`, "This clears answers, flashcard history, streak, plan and exam results for this pack in this browser. It can’t be undone unless you copied your progress first.", "Reset progress", true)){
+      progress = sanitizeProgress(null); saveProgress(); session = null; saveSession(); progressView(); say("Progress reset.");
+    }
+  });
+}
+function exportProgress(){
+  const data = JSON.stringify({format:"examprep-progress", version:2, packId: pack.id, name: profile().name, exportedAt: new Date().toISOString(), progress});
+  openDialog(`<h2 style="margin-top:0">Copy progress</h2><p>Save this text somewhere safe. Paste it into another browser to restore your progress.</p>
+    <textarea id="exp-t" readonly>${esc(data)}</textarea>
+    <div class="row" style="justify-content:flex-end;margin-top:1rem"><button class="btn quiet" data-close>Close</button><button class="btn gold" id="exp-c">Copy to clipboard</button></div>`, d => {
+    const t = d.querySelector("#exp-t"); t.focus(); t.select();
+    d.querySelector("#exp-c").addEventListener("click", async () => {
+      try{ await navigator.clipboard.writeText(data); d.querySelector("#exp-c").textContent = "Copied"; }
+      catch(e){ t.select(); try{ document.execCommand("copy"); d.querySelector("#exp-c").textContent = "Copied"; }catch(_){ d.querySelector("#exp-c").textContent = "Select the text and copy it"; } }
+    });
+  });
+}
+function importProgress(){
+  openDialog(`<h2 style="margin-top:0">Paste progress</h2><p>Paste text from “Copy progress”. It replaces ${esc(profile().name)}’s progress for this pack in this browser.</p>
+    <textarea id="imp-t" placeholder='{"format":"examprep-progress", ...}'></textarea><p class="small" id="imp-e" role="alert"></p>
+    <div class="row" style="justify-content:flex-end;margin-top:1rem"><button class="btn quiet" data-close>Cancel</button><button class="btn gold" id="imp-go">Restore progress</button></div>`, d => {
+    d.querySelector("#imp-go").addEventListener("click", () => {
+      const e = d.querySelector("#imp-e");
+      try{
+        const o = JSON.parse(d.querySelector("#imp-t").value);
+        if(o.format !== "examprep-progress" || !o.progress) throw new Error("This doesn’t look like copied progress.");
+        if(o.packId !== pack.id) throw new Error(`This progress belongs to pack “${o.packId}”. Switch to that pack first.`);
+        progress = sanitizeProgress(o.progress); saveProgress(); d.close(); progressView(); say("Progress restored.");
+      }catch(err){ e.textContent = /JSON|Unexpected/.test(err.message) ? "The text isn’t valid. Paste the full copied text." : err.message; }
+    });
+  });
+}
+
+/* ---------- exam buckets (blueprint, library) ---------- */
+function bucketPack(id){
+  if(!id || id === pack.id) return pack;
+  const p = allPacks().find(x => x.id === id);
+  return p ? indexPack(p) : pack;
+}
+function examPicker(view, cur){
+  const list = allPacks();
+  if(list.length < 2) return "";
+  return `<div class="field" style="max-width:none;margin-bottom:1.25rem"><span class="lbl">Exam</span>
+    <div class="seg" role="group" aria-label="Choose an exam">${list.map(p => `<a class="seg-a" href="#${view}/${esc(p.id)}" aria-pressed="${p.id === cur.id}">${esc(p.shortName || p.name)}${p.id === pack.id ? " (studying)" : ""}</a>`).join("")}</div></div>`;
+}
+function bucketNote(p){
+  return p.id === pack.id ? "" : `<div class="notice row" style="justify-content:space-between"><span>You’re viewing ${esc(p.name)}. Lessons and practice open for the exam you’re studying.</span><button class="btn" id="bk-use" data-id="${esc(p.id)}">Study this exam</button></div>`;
+}
+function wireBucket(){ const b = $("#bk-use"); if(b) b.addEventListener("click", () => switchPack(b.dataset.id)); }
+function subLink(p, sid){ return p.id === pack.id ? `<a href="#lesson/${esc(sid)}">${esc(sid)}</a>` : esc(sid); }
+
+/* ---------- blueprint ---------- */
+function blueprintView(arg){
+  const p = bucketPack(arg);
+  const ex = p.exam;
+  const rows = p.domains.map(d => {
+    const items = Math.round(ex.itemCount * d.weight / 100);
+    return `<tr class="dom"><td>${esc(d.id)} ${esc(d.name)}</td><td class="num">${esc(d.weight)}%</td><td class="num">~${items}</td><td class="num">${p.questions.filter(q => q.domain === d.id).length}</td></tr>` +
+      d.subdomains.map(s => `<tr><td style="padding-left:1.6rem">${subLink(p, s.id)} ${esc(s.name)}</td><td></td><td></td><td class="num">${p.questions.filter(q => q.subdomain === s.id).length}</td></tr>`).join("");
+  }).join("");
+  $app.innerHTML = `<h1>Blueprint</h1>
+    ${examPicker("blueprint", p)}
+    <p class="eyebrow">${esc(p.name)}</p>
+    ${bucketNote(p)}
+    <p class="lede">${esc(ex.itemCount)} questions in ${fmtHM(ex.timeLimitMinutes)}, about ${Math.round(ex.timeLimitMinutes * 60 / ex.itemCount)} seconds each. ${ex.allowBack ? "" : "No skipping and no going back."}</p>
+    ${ex.notes ? `<p>${esc(ex.notes)}</p>` : ""}
+    <div class="tablewrap"><table><thead><tr><th>Domain</th><th class="num">Weight</th><th class="num">Exam items</th><th class="num">Practice qs</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  wireBucket();
+}
+
+/* ---------- library ---------- */
+function libraryView(arg){
+  const p = bucketPack(arg);
+  const refsOf = list => (list || []).map(r => typeof r === "string" ? {id:r} : r).filter(r => r && p._ref[r.id]);
+  const cover = {}, chs = {};
+  p.lessons.forEach(l => refsOf(l.references).forEach(x => { (cover[x.id] = cover[x.id] || new Set()).add(l.subdomain); }));
+  p.questions.forEach(q => refsOf(q.references).forEach(x => { (cover[x.id] = cover[x.id] || new Set()).add(q.subdomain); if(x.chapter != null) (chs[x.id] = chs[x.id] || new Set()).add(String(x.chapter)); }));
+  const byNum = (a, b) => a.localeCompare(b, undefined, {numeric:true});
+  const rows = p.references.slice().sort((a, b) => (cover[b.id] ? cover[b.id].size : 0) - (cover[a.id] ? cover[a.id].size : 0)).map(r => {
+    const c = cover[r.id] ? [...cover[r.id]].sort(byNum) : [];
+    const u = safeUrl(r.url);
+    return `<tr><td><b>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(r.title)}</a>` : esc(r.title)}</b>${chs[r.id] ? `<br><span class="small">Chapters cited: ${[...chs[r.id]].sort(byNum).map(esc).join(", ")}</span>` : ""}<br><span class="small">${esc(r.authors || "")}${r.publisher ? ", " + esc(r.publisher) : ""}${r.date ? ", " + esc(r.date) : ""}</span></td>
+      <td>${c.length ? c.map(s => subLink(p, s)).join(" ") : `<span class="small">Not yet linked</span>`}</td></tr>`;
+  }).join("");
+  const guides = (p.guides || []).map(g => {
+    const u = safeUrl(g.url);
+    const subs = (g.subdomains || []).filter(s => p._sub[s]);
+    return `<details class="card guide"><summary>${esc(g.title)}${g.kind ? ` <span class="chip" style="margin-left:.5rem">${esc(g.kind)}</span>` : ""}</summary>
+      ${g.source ? `<p class="small">Source: ${esc(g.source)}${g.added ? `, added ${esc(g.added)}` : ""}</p>` : ""}
+      ${subs.length ? `<p class="small">Covers ${subs.map(s => subLink(p, s)).join(" ")}</p>` : ""}
+      ${(g.body ? String(g.body).split(/\n{2,}/) : []).map(par => `<p>${esc(par)}</p>`).join("")}
+      ${u ? `<p><a href="${esc(u)}" target="_blank" rel="noopener noreferrer">Open the original</a></p>` : ""}</details>`;
+  }).join("");
+  $app.innerHTML = `<h1>Resource library</h1>
+    ${examPicker("library", p)}
+    <p class="eyebrow">${esc(p.name)}</p>
+    ${bucketNote(p)}
+    <h2>Study guides</h2>
+    ${guides || `<div class="card empty">No study guides for this exam yet. Guides you add, such as NotebookLM study guides or briefing docs, appear here.</div>`}
+    <h2>References</h2>
+    <p class="lede">Sorted by how many subdomains in this trainer point to each title.</p>
+    <div class="tablewrap"><table><thead><tr><th>Reference</th><th>Linked subdomains</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="small" style="margin-top:1rem">Links reflect where this trainer’s lessons and questions draw on each title, not an official mapping. ${esc(p.referenceNote || "")}</p>`;
+  wireBucket();
+}
+
+/* ---------- disclosure ---------- */
+function disclosureView(){
+  $app.innerHTML = `<div class="lesson"><h1>Disclosure</h1>
+    <p>This trainer is an independent A&amp;M Strategies study aid. It is built from the publicly available ${esc(pack.name)} outline, the published domain weights and the suggested reference list.</p>
+    <ul>
+      <li>It is not official exam preparation material, and the exam’s owner has not reviewed or endorsed it.</li>
+      <li>Lessons, questions and flashcards were written for this trainer. They are not taken from the real exam or copied from the reference books. ${esc(pack.reviewNote || "")} Fact-checking reduces errors but can’t guarantee there are none; report anything that looks wrong.</li>
+      <li>Using it can’t guarantee a passing result, and it doesn’t replace the official outline, the references or hands-on experience.</li>
+      <li>After you sit the exam you are bound by the candidate confidentiality agreement. Don’t add or share real exam content here.</li>
+      <li>“Where to find it” points to chapters and sections matched from each publisher’s table of contents. They show where a topic is covered, not an exact passage, and page numbers aren’t given. Confirm in your copy.</li>
+      <li>Your progress stays in this browser on this device. Nothing is sent to a server.</li>
+    </ul>
+    <h2>Found a mistake?</h2>
+    <p>Email it in from the <a href="#feedback">Feedback</a> page, or use “Report a problem” under any answer.</p>
+    <h2>Found a security problem?</h2>
+    <p>Report it privately. See <a href="#security">how to report a security issue</a>.</p>
+    <p class="small">Pack: ${esc(pack.name)}, version ${esc(pack.version || "–")}.</p></div>`;
+}
+function feedbackView(){
+  const name = pack.shortName || pack.name;
+  const general = (subject, prompt) => mailtoHref(`Trainer feedback: ${subject}`, [prompt, "", "", "Where in the app (screen, question id or lesson):", "", "", trainerTag()]);
+  $app.innerHTML = `<div class="lesson">
+    <p class="eyebrow">Feedback</p>
+    <h1>Report a problem or suggest a fix</h1>
+    <p style="font-size:1.1rem">Found a wrong answer, a typo or a broken screen? Have an idea that would help you study? Email <b>${esc(FEEDBACK_CONTACT)}</b>. Every report is read, and fixes go into the next update.</p>
+    <div class="row" style="margin:1rem 0 .6rem">
+      <a class="btn gold" href="${general("wrong answer", "Which question or answer looks wrong, and why:")}">Report a wrong answer</a>
+      <a class="btn" href="${general("suggestion", "What would you like added or changed:")}">Suggest a fix or idea</a>
+      <a class="btn" href="${general("something isn't working", "What happened, and what you expected:")}">Something isn’t working</a>
+      <button class="btn quiet" id="fb-copy">Copy email address</button>
+    </div>
+    <p class="small" style="color:var(--dim)">Each button opens your email app with a message started for you. If nothing opens, copy the address and email from any account.</p>
+    <h2>Fastest way to report a question</h2>
+    <p>After you answer, use <b>Report a problem with this question</b> under the explanation. It fills in the question id for you, so the fix is quick.</p>
+    <h2>What helps</h2>
+    <ul>
+      <li>The question id (such as q3.4-001) or the lesson number.</li>
+      <li>What looks wrong, and what you think is right.</li>
+      <li>A source if you have one: a NIST, OWASP, ISO or EU AI Act page, or a book chapter and section.</li>
+    </ul>
+    <h2>Please don’t send</h2>
+    <ul>
+      <li>Real exam questions or anything you saw on the exam. The candidate agreement forbids sharing them.</li>
+      <li>Passwords or other people’s personal details.</li>
+    </ul>
+    <p>Security problems go through the <a href="#security">security report page</a> instead.</p>
+    <p class="small">${esc(name)} Trainer, pack version ${esc(pack.version || "–")}.</p></div>`;
+  $("#fb-copy").addEventListener("click", async e => {
+    const b = e.currentTarget;
+    try{ await navigator.clipboard.writeText(FEEDBACK_CONTACT); b.textContent = "Copied"; }
+    catch(err){ b.textContent = FEEDBACK_CONTACT; }
+  });
+}
+function securityView(){
+  const subj = encodeURIComponent("Security issue: " + (pack.shortName || pack.name) + " Trainer");
+  $app.innerHTML = `<div class="lesson">
+    <p class="eyebrow">Vulnerability disclosure</p>
+    <h1>Report a security issue</h1>
+    <p style="font-size:1.1rem">If you find a security weakness in this trainer, email <b>${esc(SECURITY_CONTACT)}</b>. Please report it privately and don’t share it publicly until it has been fixed.</p>
+    <div class="row" style="margin:1rem 0 1.5rem">
+      <a class="btn gold" href="mailto:${esc(SECURITY_CONTACT)}?subject=${subj}">Email a report</a>
+      <button class="btn" id="sec-copy">Copy email address</button>
+    </div>
+    <h2>What to include</h2>
+    <ul>
+      <li>What you found and where in the app (for example the screen, or the pack field involved).</li>
+      <li>Steps to reproduce it, and the browser and device you used.</li>
+      <li>What an attacker could do with it.</li>
+      <li>How you’d like to be credited, if at all.</li>
+    </ul>
+    <p>Don’t include real exam questions, passwords or other people’s personal data in a report.</p>
+    <h2>What happens next</h2>
+    <ul>
+      <li>You’ll get an acknowledgment within 5 business days.</li>
+      <li>The report is assessed, fixed in priority order, and re-tested after the fix.</li>
+      <li>You’ll be told when it’s resolved, and credited if you want to be.</li>
+    </ul>
+    <h2>In scope</h2>
+    <ul>
+      <li>This trainer’s page and code, including how it handles exam packs and progress backups.</li>
+    </ul>
+    <h2>Out of scope</h2>
+    <ul>
+      <li>The hosting platform the page runs on. Report those issues to the platform provider.</li>
+      <li>Wrong answers or study content errors. These are welcome too, but they aren’t security issues.</li>
+      <li>Denial-of-service testing, social engineering and physical attacks.</li>
+    </ul>
+    <h2>Good-faith research</h2>
+    <p>If you test in good faith, stay within this scope, avoid harming others’ data or access, and report what you find privately, no action will be taken against you for that research.</p>
+    <p class="small">Policy updated ${esc(POLICY_UPDATED)}.</p></div>`;
+  $("#sec-copy").addEventListener("click", async e => {
+    const b = e.currentTarget;
+    try{ await navigator.clipboard.writeText(SECURITY_CONTACT); b.textContent = "Copied"; }
+    catch(err){ b.textContent = SECURITY_CONTACT; }
+  });
+}
+
+/* ---------- packs ---------- */
+function packsView(){
+  const list = allPacks();
+  const rows = list.map(p => `<tr><td><b>${esc(p.name)}</b><br><span class="small">${esc(p.id)}${p.version ? ", version " + esc(p.version) : ""}${p._builtIn ? ", built in" : p._overrides ? ", loaded (replaces built-in)" : ", loaded"}</span></td>
+    <td class="num">${p.questions.length} q · ${(p.lessons || []).length} lessons · ${(p.flashcards || []).length} cards</td>
+    <td class="num"><div class="row" style="justify-content:flex-end">${p.id === pack.id ? `<span class="small">In use</span>` : `<button class="btn" data-use="${esc(p.id)}">Use</button>`}
+    ${p._builtIn ? "" : `<button class="btn quiet" data-rm="${esc(p.id)}">Remove</button>`}</div></td></tr>`).join("");
+  $app.innerHTML = `
+    <h1>Exam packs</h1>
+    <p class="lede">A pack holds one exam: rules, domains and weights, references, lessons, flashcards, trap patterns and questions. Load a new pack for another exam, or an updated pack to add content. Progress is kept per pack and per practitioner.</p>
+    <div class="tablewrap"><table><thead><tr><th>Pack</th><th class="num">Content</th><th class="num"></th></tr></thead><tbody>${rows}</tbody></table></div>
+    <h2>Load a pack</h2>
+    <div class="card">
+      <div class="field"><label for="pk-file">From a file</label><input type="file" id="pk-file" accept=".json,application/json"></div>
+      <div class="field" style="max-width:none"><label for="pk-text">Or paste pack JSON</label><textarea id="pk-text" placeholder='{"schemaVersion":1,"id":"my-exam", ...}'></textarea></div>
+      <div id="pk-err" class="small" role="alert"></div>
+      <button class="btn gold" id="pk-go">Load pasted pack</button>
+    </div>
+    <h2>Pack format</h2>
+    <details><summary>Show the pack structure</summary>
+<pre>{
+  "schemaVersion": 1, "id": "unique-pack-id", "name": "Exam name", "shortName": "Short name",
+  "version": "2026.12", "description": "",
+  "exam": { "itemCount": 160, "timeLimitMinutes": 180, "allowBack": false, "passingPercent": null, "notes": "" },
+  "domains": [ { "id": "D1", "name": "Domain name", "weight": 10,
+                 "subdomains": [ { "id": "1.1", "name": "Subdomain name" } ] } ],
+  "references": [ { "id": "ref-id", "title": "Book title", "authors": "", "publisher": "", "date": "" } ],
+  "lessons": [ { "subdomain": "1.1", "summary": "", "points": [""], "traps": [""], "tip": "", "references": ["ref-id"] } ],
+  "flashcards": [ { "id": "f1", "subdomain": "1.1", "front": "", "back": "" } ],
+  "traps": [ { "title": "", "body": "" } ],
+  "guides": [ { "title": "", "kind": "Study guide", "source": "NotebookLM", "added": "2026-11-16", "subdomains": ["1.1"], "body": "", "url": "" } ],
+  "questions": [ { "id": "q1.1-001", "domain": "D1", "subdomain": "1.1", "type": "scenario", "difficulty": 2,
+                   "stem": "", "options": ["A","B","C","D"], "answer": 0, "explanation": "",
+                   "references": [ { "id": "ref-id", "chapter": 4, "chapterTitle": "", "section": "", "pages": "" } ] } ]
+}</pre>
+<p class="small">"answer" is the position of the correct option, starting at 0. Options are shuffled each time unless "lockOptions" is true.</p>
+    </details>`;
+  $app.querySelectorAll("[data-use]").forEach(b => b.addEventListener("click", () => switchPack(b.dataset.use)));
+  $app.querySelectorAll("[data-rm]").forEach(b => b.addEventListener("click", async () => {
+    const id = b.dataset.rm;
+    if(!(await confirmBox("Remove this pack?", "The pack is removed from this browser. Progress for it is kept in case you load it again.", "Remove pack", true))) return;
+    store.set(K.packs, store.get(K.packs, []).filter(p => p.id !== id));
+    if(pack.id === id) store.del(K.active);
+    loadActive(); packsView(); say("Pack removed.");
+  }));
+  $("#pk-file").addEventListener("change", ev => {
+    const f = ev.target.files && ev.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = () => loadPackText(String(r.result));
+    r.onerror = () => { $("#pk-err").textContent = "The file couldn’t be read. Try pasting its contents instead."; };
+    r.readAsText(f);
+  });
+  $("#pk-go").addEventListener("click", () => loadPackText($("#pk-text").value));
+}
+async function loadPackText(text){
+  const err = $("#pk-err");
+  if(String(text).length > 5000000){ err.textContent = "That pack is larger than 5 MB. Split it or remove unused content."; return; }
+  let p;
+  try{ p = JSON.parse(text); }catch(e){ err.textContent = "That isn’t valid JSON. Check that you copied the whole pack."; return; }
+  let errs;
+  try{ errs = validatePack(p); }catch(e){ errs = ["The pack structure couldn’t be read. Compare it with the pack format below."]; }
+  if(errs.length){ err.innerHTML = "This pack has problems:<br>" + errs.map(esc).join("<br>"); return; }
+  const existing = allPacks().find(x => x.id === p.id);
+  if(existing){
+    const official = existing._builtIn;
+    const ok = await confirmBox(official ? "Replace the built-in pack?" : "Replace a loaded pack?",
+      `A pack with the id “${p.id}” is already here (${existing.name}). Loading “${p.name}” replaces its questions, answers and references in this browser.${official ? " Only do this with a pack from a source you trust, such as the project’s own repository." : ""}`,
+      official ? "Replace built-in pack" : "Replace pack", true);
+    if(!ok){ err.textContent = "Nothing was loaded."; return; }
+  }
+  const raw = store.get(K.packs, []);
+  const custom = (Array.isArray(raw) ? raw : []).filter(x => x && x.id !== p.id);
+  custom.push(p);
+  if(!store.set(K.packs, custom)) err.textContent = "Loaded for this visit only. The pack is too large to save in this browser.";
+  store.set(K.active, p.id); loadActive(); say(`Loaded ${p.name}.`); packsView();
+}
+function switchPack(id){ store.set(K.active, id); loadActive(); go("dashboard"); say(`Switched to ${pack.name}.`); }
+
+/* ---------- keyboard ---------- */
+document.addEventListener("keydown", e => {
+  if(dlg.open) return;
+  if(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if(currentView === "recall" && recallQ){
+    if((e.key === " " || e.key === "Enter") && !recallShown){ e.preventDefault(); const f = $("#rc-flip"); if(f) f.click(); return; }
+    if(recallShown && (e.key === "1" || e.key.toLowerCase() === "m")){ e.preventDefault(); const m = $("#rc-miss"); if(m) m.click(); return; }
+    if(recallShown && (e.key === "2" || e.key.toLowerCase() === "g")){ e.preventDefault(); const g = $("#rc-got"); if(g) g.click(); return; }
+    return;
+  }
+  if(currentView !== "session" || !session || session.finished) return;
+  const it = session.items[session.i];
+  const k = e.key.toUpperCase();
+  let idx = LETTERS.indexOf(k);
+  if(idx < 0 && /^[1-8]$/.test(e.key)) idx = +e.key - 1;
+  if(idx >= 0 && idx < it.order.length && k.length === 1){ e.preventDefault(); choose(it.order[idx]); return; }
+  if(e.key === "Enter" && !(e.target && e.target.tagName === "BUTTON")){ const a = document.getElementById("act"); if(a && !a.disabled){ e.preventDefault(); a.click(); } }
+});
+
+/* ---------- boot ---------- */
+applyPrefs();
+loadActive();
+renderWho();
+try{ if(!location.hash && prefs.last && Object.prototype.hasOwnProperty.call(VIEWS, prefs.last.v)){ currentView = prefs.last.v; viewArg = prefs.last.arg || null; } }catch(e){}
+if(!location.hash && session && !session.finished) currentView = "session";
+route();
+})();
+</script>
+</body>
+</html>

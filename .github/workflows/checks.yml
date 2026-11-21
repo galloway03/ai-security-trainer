@@ -1,0 +1,67 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+
+      - name: Validate the exam pack
+        run: python3 tools/check_pack.py packs/isc2-ai-security-pilot.json
+
+      - name: Confirm index.html matches the template and pack
+        run: |
+          python3 build.py packs/isc2-ai-security-pilot.json "$RUNNER_TEMP/index.html"
+          if ! cmp -s index.html "$RUNNER_TEMP/index.html"; then
+            echo "::error file=index.html::index.html is out of date. Run 'python3 build.py' and commit the result."
+            exit 1
+          fi
+
+      - name: Check font hashes
+        run: cd fonts && sha256sum -c SHA256SUMS
+
+      - name: Install the test browser
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.63.0
+          python3 -m playwright install --with-deps chromium
+
+      - name: Run the security regression (14 tests)
+        run: |
+          python3 tools/pentest/pentest.py index.html packs/isc2-ai-security-pilot.json ci | tee pentest.log
+          python3 - <<'PY'
+          import json, sys
+          r = json.load(open("tools/pentest/out/results-ci.json"))
+          failed = [x["id"] + " " + x["name"] for x in r if x["result"] != "PASS"]
+          print(f"{len(r) - len(failed)} of {len(r)} security tests passed")
+          if failed:
+              for f in failed: print("::error::" + f)
+              sys.exit(1)
+          PY
+
+      - name: Keep the test results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: security-test-results
+          path: tools/pentest/out/results-ci.json
+          if-no-files-found: ignore

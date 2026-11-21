@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 build.py:*)",
+      "Bash(python3 tools/check_pack.py:*)",
+      "Bash(python3 tools/import_questions.py:*)",
+      "Bash(python3 tools/pentest/pentest.py:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "deny": [
+      "Edit(./index.html)"
+    ]
+  }
+}

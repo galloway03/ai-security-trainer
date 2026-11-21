@@ -1,0 +1,15 @@
+name: Feature or study-tool idea
+description: Something the trainer should do that it doesn't.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help you study
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example or screenshot (optional)
