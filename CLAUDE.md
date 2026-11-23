@@ -55,5 +55,6 @@ https://galloway03.github.io/ai-security-trainer/. Mimi and two or three study p
 
 ## Style
 - Look: "Night bold". Near-black plum background (#110919), gold accent #E3B94E (brand gold #C9A84C/#C9952A),
-  brand purple #2D0A4E/#4A2070, gold underline navigation, 6px corners, uppercase buttons. Sans-serif text only.
+  brand purple #2D0A4E/#4A2070, a left fly-out menu (grouped Study, Practice, Track, Resources, Help), 6px corners,
+  uppercase buttons. Sans-serif text only.
 - App and docs text: plain, short sentences. Avoid jargon a study partner wouldn't know.
