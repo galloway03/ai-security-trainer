@@ -46,17 +46,33 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* Header */
 .top{background:var(--bg);border-bottom:2px solid var(--gold)}
-.top-inner{max-width:1040px;margin:0 auto;padding:1rem 1.25rem .9rem}
+.top-inner{max-width:1040px;margin:0 auto;padding:.9rem 1.25rem .8rem}
+.topbar{display:flex;align-items:center;gap:1rem}
+.menu-btn{display:inline-flex;align-items:center;gap:.6rem;min-height:46px;padding:.5rem .9rem;background:transparent;color:var(--ink);border:1px solid var(--line2);border-radius:6px;font:700 .9rem var(--sans);text-transform:uppercase;letter-spacing:.08em;cursor:pointer}
+.menu-btn:hover{border-color:var(--gold);color:var(--gold)}
+.burger{display:inline-grid;gap:4px}.burger i{display:block;width:20px;height:2px;background:currentColor;border-radius:2px}
+.scrim{position:fixed;inset:0;background:rgba(5,2,10,.62);z-index:40}
+.drawer{position:fixed;inset:0 auto 0 0;z-index:50;width:min(320px,86vw);background:var(--bg);border-right:2px solid var(--gold);box-shadow:12px 0 40px rgba(0,0,0,.45);overflow-y:auto;transform:translateX(-105%);visibility:hidden}
+body.drawer-open .drawer{transform:none;visibility:visible}
+body.drawer-open{overflow:hidden}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.1rem .4rem}
+.drawer-title{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.drawer-close{width:42px;height:42px;border:1px solid var(--line2);border-radius:6px;background:transparent;color:var(--ink);font-size:1.5rem;line-height:1;cursor:pointer}
+.drawer-close:hover{border-color:var(--gold);color:var(--gold)}
+@media (prefers-reduced-motion:no-preference){.drawer{transition:transform .22s ease,visibility .22s}}
 .brand{display:flex;align-items:center;gap:.9rem;text-decoration:none;color:var(--ink)}
 .brand img.avatar{flex:none;height:72px;width:auto;padding:4px;background:radial-gradient(circle at 50% 62%,var(--plum) 0 57%,transparent 58%)}
 .brand-name{font-family:var(--sans);font-weight:800;font-size:1.75rem;line-height:1.1;letter-spacing:-.025em}
 .brand-name span{color:var(--gold)}
 .brand-sub{font-family:var(--mono);letter-spacing:.24em;text-transform:uppercase;font-size:.78rem;color:var(--muted);margin-top:.2rem}
-.nav{display:flex;flex-wrap:wrap;gap:.2rem .35rem;margin:1rem 0 .2rem;align-items:center}
-.nav a{font-family:var(--sans);font-weight:600;font-size:1.02rem;color:var(--ink);text-decoration:none;padding:.4rem .15rem;margin-right:.75rem;border:0;border-bottom:3px solid transparent;border-radius:0;opacity:.8}
-.nav a:hover{opacity:1;border-bottom-color:var(--line2)}
-.nav a[aria-current="page"]{color:var(--gold);border-bottom-color:var(--gold);opacity:1}
-.tools{display:flex;gap:.5rem;margin-left:auto}
+.nav{display:flex;flex-direction:column;padding:0 .6rem 1.4rem}
+.nav-group{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:1rem .55rem .35rem;padding-top:.8rem;border-top:1px solid var(--line)}
+.nav-group:first-child{border-top:0;padding-top:0;margin-top:.4rem}
+.nav a{display:flex;flex-direction:column;gap:.05rem;font-family:var(--sans);font-weight:600;font-size:1.05rem;color:var(--ink);text-decoration:none;padding:.5rem .7rem .5rem .8rem;border-left:3px solid transparent;border-radius:0 6px 6px 0}
+.nav a small{font-weight:400;font-size:.82rem;color:var(--dim)}
+.nav a:hover{background:var(--surface)}
+.nav a[aria-current="page"]{color:var(--gold);border-left-color:var(--gold);background:var(--surface)}
+.tools{display:flex;gap:.5rem;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
 .tool{font-family:var(--mono);letter-spacing:.12em;font-size:.78rem;background:transparent;border:1px solid var(--line2);border-radius:6px;padding:.45rem .7rem;min-height:40px;cursor:pointer;color:var(--ink)}
 .tool[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
 .who{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:.9rem;padding-top:.85rem}
@@ -125,7 +141,9 @@ p{margin:.4rem 0 .9rem;max-width:68ch}
   h1{font-size:1.7rem}
   .brand-name{font-size:1.35rem}
   .brand img.avatar{height:58px}
-  .nav a{font-size:.96rem;padding:.38rem .6rem}
+  .topbar{flex-wrap:wrap;gap:.7rem}
+  .topbar .brand{order:-1;flex:1 1 100%}
+  .tools{margin-left:auto}
 }
 
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem}
@@ -241,7 +259,7 @@ dialog{border:1px solid var(--line2);border-radius:6px;background:var(--surface)
 dialog::backdrop{background:rgba(5,2,12,.7)}
 pre{background:var(--bg2);padding:1rem;border-radius:6px;overflow-x:auto;font-size:.78rem;line-height:1.45}
 details summary{cursor:pointer;font-family:var(--sans);font-weight:600;min-height:44px;display:flex;align-items:center}
-body.focus .nav,body.focus .who{display:none}
+body.focus .menu-btn,body.focus .who{display:none}
 body.focus .top-inner{padding-bottom:1rem}
 .resume{position:sticky;top:0;z-index:6;background:var(--gold);color:var(--gold-ink)}
 .resume-in{max-width:1040px;margin:0 auto;padding:.55rem 1.25rem;display:flex;gap:.8rem;align-items:center;justify-content:space-between;flex-wrap:wrap;font-family:var(--sans);font-weight:600}
@@ -254,36 +272,53 @@ body.focus .top-inner{padding-bottom:1rem}
 <body>
 <header class="top">
   <div class="top-inner">
-    <a class="brand" href="#dashboard" aria-label="Dashboard">
-      <img class="avatar" src="__AVATAR__" alt="" width="54" height="72">
-      <div><div class="brand-name" id="brand-name">Exam <span>Trainer</span></div><div class="brand-sub">A&amp;M Strategies</div></div>
-    </a>
-    <nav class="nav" aria-label="Main">
-      <a href="#dashboard" data-nav="dashboard">Dashboard</a>
-      <a href="#today" data-nav="today">Today</a>
-      <a href="#plan" data-nav="plan">Study plan</a>
-      <a href="#learn" data-nav="learn">Learn</a>
-      <a href="#exam" data-nav="exam">Exams</a>
-      <a href="#study" data-nav="study">Domain drill</a>
-      <a href="#recall" data-nav="recall">Rapid recall</a>
-      <a href="#traps" data-nav="traps">Trap patterns</a>
-      <a href="#progress" data-nav="progress">Progress</a>
-      <a href="#blueprint" data-nav="blueprint">Blueprint</a>
-      <a href="#library" data-nav="library">Resource library</a>
-      <a href="#packs" data-nav="packs">Exam packs</a>
-      <a href="#feedback" data-nav="feedback">Feedback</a>
-      <a href="#disclosure" data-nav="disclosure">Disclosure</a>
+    <div class="topbar">
+      <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="drawer">
+        <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><span>Menu</span>
+      </button>
+      <a class="brand" href="#dashboard" aria-label="Dashboard">
+        <img class="avatar" src="__AVATAR__" alt="" width="54" height="72">
+        <div><div class="brand-name" id="brand-name">Exam <span>Trainer</span></div><div class="brand-sub">A&amp;M Strategies</div></div>
+      </a>
       <span class="tools">
         <button class="tool" id="t-contrast" aria-pressed="false">Contrast</button>
         <button class="tool" id="t-size">Text size</button>
       </span>
-    </nav>
+    </div>
     <div class="who">
       <b id="who-name">Me</b><span class="chip">Practitioner</span>
       <button class="link" id="who-switch">Switch practitioner</button>
     </div>
   </div>
 </header>
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Main menu" aria-hidden="true" inert>
+  <div class="drawer-head">
+    <span class="drawer-title">Menu</span>
+    <button class="drawer-close" id="drawer-close" aria-label="Close menu">×</button>
+  </div>
+  <nav class="nav" aria-label="Main">
+      <p class="nav-group">Study</p>
+      <a href="#dashboard" data-nav="dashboard"><span>Dashboard</span><small>Your day at a glance</small></a>
+      <a href="#today" data-nav="today"><span>Today</span><small>10-question daily check</small></a>
+      <a href="#plan" data-nav="plan"><span>Study plan</span><small>Day-by-day to exam day</small></a>
+      <a href="#learn" data-nav="learn"><span>Learn</span><small>A lesson for every subdomain</small></a>
+      <p class="nav-group">Practice</p>
+      <a href="#exam" data-nav="exam"><span>Exams</span><small>Timed, weighted practice exams</small></a>
+      <a href="#study" data-nav="study"><span>Domain drill</span><small>Questions by domain or subdomain</small></a>
+      <a href="#recall" data-nav="recall"><span>Rapid recall</span><small>Flashcards</small></a>
+      <a href="#traps" data-nav="traps"><span>Trap patterns</span><small>Common wrong-answer traps</small></a>
+      <p class="nav-group">Track</p>
+      <a href="#progress" data-nav="progress"><span>Progress</span><small>Scores by domain</small></a>
+      <a href="#blueprint" data-nav="blueprint"><span>Blueprint</span><small>The exam outline and weights</small></a>
+      <p class="nav-group">Resources</p>
+      <a href="#library" data-nav="library"><span>Resource library</span><small>Books, guides and references</small></a>
+      <a href="#packs" data-nav="packs"><span>Exam packs</span><small>Load or switch exams</small></a>
+      <p class="nav-group">Help</p>
+      <a href="#feedback" data-nav="feedback"><span>Feedback</span><small>Report a problem or idea</small></a>
+      <a href="#disclosure" data-nav="disclosure"><span>Disclosure</span><small>About this trainer</small></a>
+  </nav>
+</aside>
 <div id="resume" class="resume" hidden></div>
 <main id="app" tabindex="-1"></main>
 <div class="sr" aria-live="polite" id="live"></div>
@@ -1587,9 +1622,37 @@ async function loadPackText(text){
 }
 function switchPack(id){ store.set(K.active, id); loadActive(); go("dashboard"); say(`Switched to ${pack.name}.`); }
 
+/* ---------- fly-out menu ---------- */
+const byId = id => document.getElementById(id);
+const $menuBtn = byId("menu-btn"), $drawer = byId("drawer"), $scrim = byId("scrim");
+const drawerOpen = () => document.body.classList.contains("drawer-open");
+function setDrawer(open, returnFocus = true){
+  document.body.classList.toggle("drawer-open", open);
+  $menuBtn.setAttribute("aria-expanded", String(open));
+  $drawer.inert = !open; $drawer.setAttribute("aria-hidden", String(!open));
+  $app.inert = open; $scrim.hidden = !open;
+  if(open) setTimeout(() => ($drawer.querySelector('[aria-current="page"]') || $drawer.querySelector(".nav a")).focus(), 40);
+  else if(returnFocus) $menuBtn.focus();
+}
+$menuBtn.addEventListener("click", () => setDrawer(!drawerOpen()));
+byId("drawer-close").addEventListener("click", () => setDrawer(false));
+$scrim.addEventListener("click", () => setDrawer(false));
+$drawer.addEventListener("click", e => { if(e.target.closest("a[href]")) setDrawer(false, false); });
+document.addEventListener("keydown", e => {
+  if(!drawerOpen()) return;
+  if(e.key === "Escape"){ e.preventDefault(); e.stopImmediatePropagation(); setDrawer(false); return; }
+  if(e.key === "Tab"){
+    const f = [...$drawer.querySelectorAll("a[href],button")];
+    const first = f[0], last = f[f.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    else if(!$drawer.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+  }
+}, true);
+
 /* ---------- keyboard ---------- */
 document.addEventListener("keydown", e => {
-  if(dlg.open) return;
+  if(dlg.open || drawerOpen()) return;
   if(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
   if(currentView === "recall" && recallQ){
     if((e.key === " " || e.key === "Enter") && !recallShown){ e.preventDefault(); const f = $("#rc-flip"); if(f) f.click(); return; }

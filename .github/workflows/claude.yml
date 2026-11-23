@@ -1,6 +1,6 @@
 # Lets @claude respond in issues and pull requests.
 # Setup (one time): install https://github.com/apps/claude on this repo, then add the repository
-# secret CLAUDE_CODE_OAUTH_TOKEN (create it with `claude setup-token`). See README section 2C.
+# secret CLAUDE_CODE_OAUTH_TOKEN (create it with `claude setup-token`). Setup steps are in the owner notes.
 # Only people with write access to the repo can trigger it.
 name: Claude
 
